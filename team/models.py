@@ -1,5 +1,4 @@
-from uuid import uuid1
-
+import uuid
 from django.db import models
 from problem.models import Attack, Problem
 
@@ -7,7 +6,9 @@ from problem.models import Attack, Problem
 # Create your models here.
 class Team(models.Model):
     name = models.CharField('队伍名称', max_length=50, unique=True)
-    token = models.CharField('队伍ID', max_length=36, unique=True, default=uuid1())
+    # token = models.CharField('队伍ID', max_length=36, unique=True, default=uuid1())
+    token = models.UUIDField(default=uuid.uuid4, null=False, blank=False, verbose_name=u'队伍TOKEN',
+                             help_text="可用于提交flag,加入队伍")
 
     @property
     def score(self):
