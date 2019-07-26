@@ -11,6 +11,14 @@ class Team(models.Model):
                              help_text="可用于提交flag,加入队伍")
 
     @property
+    def ports(self):
+        port_str = ""
+        problems = Problem.objects.filter(team=self)
+        for problem in problems:
+            port_str += "," + str(problem.web_external_port)
+        return port_str
+
+    @property
     def score(self):
         solved_problems = Attack.objects.filter(attack_team=self)
         integral = 0
