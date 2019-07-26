@@ -18,3 +18,21 @@ beta 0.1 版本功能说明
     - [ ] 可发布提示公告
     - [ ] 可重置赛题容器 
 - [ ] 裁判手动结束比赛
+
+
+# 第一次开始
+
+执行
+
+```bash
+
+python manage.py makemigrations
+python manage.py collectstatic
+python manage.py migrate
+
+```
+
+创建一个管理员账户
+```bash
+python manage.py createsuperuser
+```

@@ -24,7 +24,7 @@ SECRET_KEY = 'zj+ej_($gs6j%2tp5%d2_!_sh%vm5o_)8j1r(lno!1%vn$dkbn'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
