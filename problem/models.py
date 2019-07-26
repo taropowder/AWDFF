@@ -18,6 +18,8 @@ class ProblemTemplate(models.Model):
                                                                   '需要显式调用可执行文件,例如： '
                                                                   'bash -c \"echo \'{flag}\' > /flag\"')
 
+    time = models.DateTimeField(auto_now=True)
+
     def __str__(self):
         return self.name
 
@@ -42,6 +44,7 @@ class Problem(models.Model):
     )
     team = models.ForeignKey('team.Team', on_delete=models.CASCADE)
     status = models.CharField('容器状态', choices=STATUS_CHOICES, max_length=10)
+    time = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = '题目实例 (docker 容器)'
@@ -56,5 +59,15 @@ class Attack(models.Model):
 
     class Meta:
         verbose_name = '攻击记录'
+        verbose_name_plural = verbose_name
+        ordering = ['-id']
+
+
+class Down(models.Model):
+    time = models.DateTimeField(auto_now=True)
+    team = models.ForeignKey('team.Team', on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = '宕机记录'
         verbose_name_plural = verbose_name
         ordering = ['-id']

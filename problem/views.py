@@ -20,15 +20,8 @@ docker_controller = DockerController()
 
 
 class InstantiateAllProblemView(View):
-    # template_name = 'admin/instantiate_problem.html'
+    # 开启比赛
 
-    # def form_valid(self, form):
-    #     self.object = form.save()
-    #     user = self.request.user
-    #     user.team = self.object
-    #     user.is_leader = True
-    #     user.save()
-    #     # return HttpResponseRedirect(reverse_lazy('team_detail', kwargs={'pk': self.object.id}))
     def post(self, request):
         teams = Team.objects.all()
         resp = {'status':'ok'}
@@ -55,3 +48,5 @@ class InstantiateAllProblemView(View):
         templates = ProblemTemplate.objects.all()
         result['templates'] = templates
         return render(request,'manager/instantiate_all_problem.html',result)
+
+

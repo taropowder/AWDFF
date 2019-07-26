@@ -10,8 +10,8 @@ admin.site.register(Attack)
 
 
 @admin.register(Problem)
-class DoorCardAdmin(admin.ModelAdmin):
-    list_display = ('container_id', 'template', 'web_external_port', 'ssh_external_port', 'status', 'team')
+class ProblemAdmin(admin.ModelAdmin):
+    list_display = ('container_id', 'time', 'template', 'web_external_port', 'ssh_external_port', 'status', 'team')
     list_display_links = ('container_id',)
 
     # def name(self, obj):
