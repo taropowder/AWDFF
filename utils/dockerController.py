@@ -53,11 +53,11 @@ if __name__ == '__main__':
     # d.run_container('94c8d3f00904', 80)
     # d.show_running_containers()
     # d.rm_container('01eb037b8e')
-    command = """ bash -c "echo '{flag}' > /flag" """
+    command = """ bash -c "useradd -p `openssl passwd -1 -salt 'taro' {password}` user5" """
     from utils import flag
-    command = flag.generate_flag_command(command)
+    command = flag.generate_ssh_paasword(command)
     print(command)
-    d.exec_container('a931e4b138d9', command[1])
+    d.exec_container('6ba731551323', command[1])
     # ciscn_09
     # d._info()_info
     # d.runContainer()

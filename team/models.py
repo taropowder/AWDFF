@@ -7,7 +7,7 @@ from problem.models import Attack
 # Create your models here.
 class Team(models.Model):
     name = models.CharField('队伍名称', max_length=50, unique=True)
-    token = models.CharField('队伍ID', max_length=8, unique=True, default=uuid4())
+    token = models.CharField('队伍ID', max_length=36, unique=True, default=uuid4())
 
     @property
     def score(self):
@@ -19,6 +19,9 @@ class Team(models.Model):
             except:
                 pass
         return integral
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         verbose_name = '队伍'

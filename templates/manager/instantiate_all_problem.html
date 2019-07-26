@@ -1,0 +1,14 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <select name="template_id">
+
+            {% for template in templates %}
+                <option value="{{ template.id }}">{{ template.name }}</option>
+            {% endfor %}
+
+        </select>
+        <input type="submit" value="开启题目">
+    </form>
+{% endblock %}

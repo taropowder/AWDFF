@@ -4,13 +4,22 @@ from django.db import models
 # Create your models here.
 
 class ProblemTemplate(models.Model):
+    ADD_USER_COMMAND = """bash -c "useradd -p `openssl passwd -1 -salt 'taro' {password}` user" """
+    name = models.CharField('题目名称', max_length=50, unique=True)
     image_id = models.CharField('镜像id', max_length=50, unique=True)
     score = models.IntegerField('题目分数')
     internal_port = models.IntegerField('内部端口')
-    docker_command = models.CharField('docker 启动命令', max_length=100)
+    docker_command = models.CharField('docker 启动命令', max_length=100, null=True, blank=True)
+    change_passwd_command = models.TextField('修改用户密码的命令',
+                                             default=ADD_USER_COMMAND,
+                                             help_text="请用{passwd} 替换密码的位置,"
+                                                       "如环境内存在openssl并且不存在user用户则不需要修改此命令")
     change_flag_command = models.TextField('修改flag的命令', help_text='请用{flag}替换flag的位置,注意：如果需要重定向写入flag'
                                                                   '需要显式调用可执行文件,例如： '
                                                                   'bash -c \"echo \'{flag}\' > /flag\"')
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         verbose_name = '题目模板（docker镜像）'
@@ -21,6 +30,7 @@ class ProblemTemplate(models.Model):
 class Problem(models.Model):
     web_external_port = models.IntegerField('web 题目外部端口')
     ssh_external_port = models.IntegerField('ssh 外部端口')
+    ssh_passwd = models.CharField('ssh密码', max_length=12)
     template = models.ForeignKey(ProblemTemplate, on_delete=models.CASCADE)
     flag = models.CharField('题目FLAG', max_length=50, unique=True)
     container_id = models.CharField('容器id', max_length=50, unique=True)

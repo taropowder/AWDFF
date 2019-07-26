@@ -6,7 +6,7 @@ from django.views.generic import View, DetailView, UpdateView, CreateView, FormV
 from problem.models import Problem, ProblemTemplate
 from team.models import Team
 from utils.dockerController import DockerController
-from utils.flag import generate_flag_command
+from utils.flag import generate_flag_command,generate_ssh_paasword
 from django.http import HttpResponse
 
 # Create your views here.
@@ -31,11 +31,10 @@ class InstantiateAllProblemView(View):
     #     # return HttpResponseRedirect(reverse_lazy('team_detail', kwargs={'pk': self.object.id}))
     def post(self, request):
         teams = Team.objects.all()
-        resp = {'status', 'ok'}
-        template = get_object_or_404(Problem,pk=request.POST.get('template_id', None))
-        print(23123)
+        resp = {'status':'ok'}
+        template = get_object_or_404(ProblemTemplate,pk=request.POST.get('template_id', None))
         for team in teams:
-            docker_info = docker_controller.run_container(template.image_id)
+            docker_info = docker_controller.run_container(template.image_id,template.internal_port)
             problem = Problem()
             problem.container_id = docker_info['id']
             problem.ssh_external_port = docker_info['ssh_port']
@@ -43,12 +42,16 @@ class InstantiateAllProblemView(View):
             problem.status = 'running'
             problem.template = template
             problem.team = team
-            problem.flag, command = generate_flag_command(template.docker_command)
+            problem.flag, command = generate_flag_command(template.change_flag_command)
+            docker_controller.exec_container(problem.container_id, command)
+            problem.ssh_passwd, command = generate_ssh_paasword(template.change_passwd_command)
             docker_controller.exec_container(problem.container_id, command)
             problem.save()
 
         return HttpResponse(json.dumps(resp), content_type="application/json")
 
     def get(self,request):
-
-        return render(request,'admin/instantiate_problem.html')
+        result = {}
+        templates = ProblemTemplate.objects.all()
+        result['templates'] = templates
+        return render(request,'manager/instantiate_all_problem.html',result)
