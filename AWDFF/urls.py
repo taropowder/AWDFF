@@ -17,9 +17,12 @@ from django.contrib import admin
 from django.conf.urls import url
 from django.urls import path
 from django.urls import path, include
+from .view import home
 
 urlpatterns = [
     url(r'^admin_tools/', include('admin_tools.urls')),
+    url(r'^$', home),
     path('admin/', admin.site.urls),
-    path('problem/',include('problem.urls'))
+    path('problem/', include('problem.urls')),
+    path('competition/', include('competition.urls'))
 ]

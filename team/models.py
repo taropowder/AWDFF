@@ -1,7 +1,7 @@
 from uuid import uuid4
 
 from django.db import models
-from problem.models import Attack
+from problem.models import Attack, Problem
 
 
 # Create your models here.
@@ -11,11 +11,17 @@ class Team(models.Model):
 
     @property
     def score(self):
-        solved_problems = Attack.objects.filter(member=self)
+        solved_problems = Attack.objects.filter(attack_team=self)
         integral = 0
         for solved_problem in solved_problems:
             try:
-                integral += solved_problem.integral
+                integral += solved_problem.problem.template.score
+            except:
+                pass
+        hacked_problems = Problem.objects.filter(team=self, status='hacked')
+        for hacked_problem in hacked_problems:
+            try:
+                integral -= hacked_problem.template.score
             except:
                 pass
         return integral

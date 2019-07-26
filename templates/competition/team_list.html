@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+ <table class="layui-table" lay-skin="line">
+                <colgroup>
+                    <col width="150">
+                    <col width="150">
+                    <col>
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>队伍名称</th>
+                    <th>队伍分数</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for team in team_list %}
+                <tr>
+                    <td>{{ team.name }}</td>
+                    <td>{{ team.score }}</td>
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+</body>
+</html>

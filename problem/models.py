@@ -46,6 +46,9 @@ class Problem(models.Model):
     status = models.CharField('容器状态', choices=STATUS_CHOICES, max_length=10)
     time = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.container_id + ">>>>>>>" + self.team.name
+
     class Meta:
         verbose_name = '题目实例 (docker 容器)'
         verbose_name_plural = verbose_name
@@ -56,6 +59,9 @@ class Attack(models.Model):
     problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
     time = models.DateTimeField(auto_now=True)
     attack_team = models.ForeignKey('team.Team', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.attack_team.name + ">>>>HACK>>>>" + self.problem.team.name
 
     class Meta:
         verbose_name = '攻击记录'

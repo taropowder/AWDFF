@@ -5,7 +5,10 @@
     <title>Title</title>
 </head>
 <body>
-<a href="{% url 'team_list'%}">赛况</a>
-<a href="{% url 'submit_flag'%}">提交flag</a>
+<form method='post'>
+{% csrf_token %}
+{{ form }}
+<input type="submit" value="提交">
+</form>
 </body>
 </html>

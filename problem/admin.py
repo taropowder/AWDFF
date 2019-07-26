@@ -6,7 +6,6 @@ from .views import InstantiateAllProblemView
 
 
 admin.site.register(ProblemTemplate)
-admin.site.register(Attack)
 
 
 @admin.register(Problem)
@@ -16,7 +15,15 @@ class ProblemAdmin(admin.ModelAdmin):
 
     # def name(self, obj):
     #     return str(obj.owner) + "：" + str(obj.owner.first_name)
-    #
+
+
+@admin.register(Attack)
+class AttackAdmin(admin.ModelAdmin):
+    list_display = ('detail', 'problem', 'time')
+    list_display_links = ('detail',)
+
+    def detail(self, obj):
+        return str(obj)
 
 
 _admin_site_get_urls = admin.site.get_urls
