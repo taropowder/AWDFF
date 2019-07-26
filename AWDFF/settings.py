@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'problem',
     'team',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -55,25 +56,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'AWDFF.urls'
 
-# TEMPLATES = [
-#     {
-#         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-#         # 'DIRS': [os.path.join(BASE_DIR, 'templates')],
-#         'OPTIONS': {
-#             'context_processors': [
-#                 'django.template.context_processors.debug',
-#                 'django.template.context_processors.request',
-#                 'django.contrib.auth.context_processors.auth',
-#                 'django.contrib.messages.context_processors.messages',
-#             ],
-#             'loaders': [
-#                 "admin_tools.template_loaders.Loader",
-#                 # insert your TEMPLATE_LOADERS here
-#             ]
-#         },
-#         # 'APP_DIRS': True,
-#     },
-# ]
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -149,12 +131,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'static'),
-# ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 ADMIN_TOOLS_MENU = 'menu.CustomMenu'
 ADMIN_TOOLS_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
 ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'dashboard.CustomAppIndexDashboard'
-# STATIC_ROOT = "/Users/taro/Documents/tools/AWDFF/static"
+
+CRONJOBS = [
+    # 表示每过一分钟执行一次
+    ('0/5 * * * * ? *', 'checker.task.task', '> /tmp/testapi_crontab.log')
+]
+
+# 后面的>> /tmp/testapi_crontab.log' 表示将定时执行的函数的打印结果输出到已经在本机中建立好的log文件中，方便调试。
