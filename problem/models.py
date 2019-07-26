@@ -8,7 +8,9 @@ class ProblemTemplate(models.Model):
     score = models.IntegerField('题目分数')
     internal_port = models.IntegerField('内部端口')
     docker_command = models.CharField('docker 启动命令', max_length=100)
-    change_flag_command = models.TextField('修改flag的命令', help_text='请用{flag}替换flag的位置')
+    change_flag_command = models.TextField('修改flag的命令', help_text='请用{flag}替换flag的位置,注意：如果需要重定向写入flag'
+                                                                  '需要显式调用可执行文件,例如： '
+                                                                  'bash -c \"echo \'{flag}\' > /flag\"')
 
     class Meta:
         verbose_name = '题目模板（docker镜像）'
@@ -28,6 +30,7 @@ class Problem(models.Model):
         ('down', '宕机'),
         ('hacked', '被攻陷'),
     )
+    team = models.ForeignKey('team.Team', on_delete=models.CASCADE)
     status = models.CharField('容器状态', choices=STATUS_CHOICES, max_length=10)
 
     class Meta:
@@ -39,7 +42,7 @@ class Problem(models.Model):
 class Attack(models.Model):
     problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
     time = models.DateTimeField(auto_now=True)
-    team = models.ForeignKey('team.Team', on_delete=models.CASCADE)
+    attack_team = models.ForeignKey('team.Team', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = '攻击记录'

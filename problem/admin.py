@@ -1,8 +1,6 @@
 from django.contrib import admin
 from .models import *
+from .views import InstantiateAllProblemView
+
 # Register your models here.
 
-
-admin.site.register(ProblemTemplate)
-admin.site.register(Problem)
-admin.site.register(Attack)
