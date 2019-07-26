@@ -124,3 +124,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+*.sqlite3
+# django migrations
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
+static/admin/**
+static/admin_tools/**
