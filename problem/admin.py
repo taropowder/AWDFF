@@ -8,6 +8,12 @@ from .views import InstantiateAllProblemView
 admin.site.register(ProblemTemplate)
 
 
+@admin.register(Down)
+class DownAdmin(admin.ModelAdmin):
+    list_display = ('problem', 'time', 'team', 'rounds')
+    list_display_links = ('problem',)
+
+
 @admin.register(Problem)
 class ProblemAdmin(admin.ModelAdmin):
     list_display = ('container_id', 'time', 'template', 'web_external_port', 'ssh_external_port', 'status', 'team')

@@ -139,7 +139,7 @@ ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'dashboard.CustomAppIndexDashboard'
 
 CRONJOBS = [
     # 表示每过一分钟执行一次
-    ('0/5 * * * * ? *', 'checker.task.task', '> /tmp/testapi_crontab.log')
+    ('*/1 * * * *', 'checker.start.check', '>> /tmp/check.log')
 ]
 
 # 后面的>> /tmp/testapi_crontab.log' 表示将定时执行的函数的打印结果输出到已经在本机中建立好的log文件中，方便调试。

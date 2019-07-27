@@ -45,6 +45,7 @@ class Problem(models.Model):
     team = models.ForeignKey('team.Team', on_delete=models.CASCADE)
     status = models.CharField('容器状态', choices=STATUS_CHOICES, max_length=10)
     time = models.DateTimeField(auto_now=True)
+    rounds = models.IntegerField('比赛轮次', default=0)
 
     def __str__(self):
         return self.container_id + ">>>>>>>" + self.team.name
@@ -56,7 +57,7 @@ class Problem(models.Model):
 
 
 class Attack(models.Model):
-    problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
+    problem = models.ForeignKey(Problem, on_delete=models.DO_NOTHING)
     time = models.DateTimeField(auto_now=True)
     attack_team = models.ForeignKey('team.Team', on_delete=models.CASCADE)
 
@@ -70,8 +71,10 @@ class Attack(models.Model):
 
 
 class Down(models.Model):
-    time = models.DateTimeField(auto_now=True)
+    time = models.DateTimeField('宕机时间', auto_now=True)
     team = models.ForeignKey('team.Team', on_delete=models.CASCADE)
+    rounds = models.IntegerField('比赛轮次', help_text="相同轮次内只会被判定宕机一次")
+    problem = models.ForeignKey(Problem, on_delete=models.DO_NOTHING)
 
     class Meta:
         verbose_name = '宕机记录'

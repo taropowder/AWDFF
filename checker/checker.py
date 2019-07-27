@@ -1,11 +1,12 @@
 import requests
-from problem.models import Problem,ProblemTemplate
+from problem.models import Problem, ProblemTemplate, Down
 from utils.dockerController import DockerController
 from utils.flag import generate_flag_command
 
 
 class CheckerTemplate:
     docker_controller = DockerController()
+
     # checker_problem_template = ProblemTemplate.objects.get(image_id='xxxxxx')
 
     def __init__(self, problem: Problem):
@@ -20,7 +21,7 @@ class CheckerTemplate:
         self.result = {}
 
     @classmethod
-    def check_or_die(cls,problem: Problem):
+    def check_or_die(cls, problem: Problem):
         if problem.template == cls.checker_problem_template:
             return cls(problem)
         else:
@@ -47,5 +48,12 @@ class CheckerTemplate:
     def __del__(self):
         if not self.result['status']:
             self.problem.status = 'down'
-        self.problem.flag, command = generate_flag_command(self.problem.template.change_flag_command)
-        Checker.docker_controller.exec_container(self.problem.container_id, command)
+            self.problem.save()
+            try:
+                down = Down.objects.get(team=self.problem.team, rounds=self.problem.rounds)
+            except Down.DoesNotExist:
+                down = None
+            if not down:
+                Down.objects.create(team=self.problem.team, rounds=self.problem.rounds, problem=self.problem)
+        # self.problem.flag, command = generate_flag_command(self.problem.template.change_flag_command)
+        # self.docker_controller.exec_container(self.problem.container_id, command)

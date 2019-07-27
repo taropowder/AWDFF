@@ -4,7 +4,7 @@ from problem.models import *
 from team.models import *
 from .form import *
 from django.http import JsonResponse, HttpResponseRedirect
-
+from uuid import UUID
 
 # Create your views here.
 
@@ -21,16 +21,25 @@ class solveProblemView(FormView):
             problem = None
         if Problem:
             try:
-                team = Team.objects.get(token=form.data['token'])
+                token_uuid = UUID(form.data['token'])
+                team = Team.objects.get(token=token_uuid)
             except Team.DoesNotExist:
                 team = None
             if team:
                 if team != problem.team:
-                    acctack = Attack.objects.create(problem=problem, attack_team=team)
-                    problem.status = 'hacked'
-                    problem.save()
-                    result['message'] = "提交正确"
-                    result['status'] = True
+                    try:
+                        attack = Attack.objects.get(problem=problem,attack_team=team)
+                    except Attack.DoesNotExist:
+                        attack = None
+                    if attack:
+                        result['message'] = "已经提交过了,不能再提交了"
+                        result['status'] = False
+                    else:
+                        acctack = Attack.objects.create(problem=problem, attack_team=team)
+                        problem.status = 'hacked'
+                        problem.save()
+                        result['message'] = "提交正确"
+                        result['status'] = True
                 else:
                     result['message'] = "你不能提交自己的FLAG"
                     result['status'] = False
