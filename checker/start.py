@@ -14,14 +14,12 @@ def get_filename():
 
 def check():
     module_name = "checker.checkers"
-    # class_name = "dvwaCheck"
     for file in get_filename():
         class_name = file.replace('.py', '')
         module_name = f"{module_name}.{class_name}"
         check_module = importlib.import_module(module_name)
         # 使用getattr()获取模块中的类
         check_class = getattr(check_module, class_name)
-        # print(check_class)
         problems = Problem.objects.all()
         for problem in problems:
             checker = check_class.check_or_die(problem)

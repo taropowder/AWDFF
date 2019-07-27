@@ -17,7 +17,7 @@ class CheckerTemplate:
         self.port = problem.web_external_port
         self.session = requests.Session()
         self.url = f"{self.protocol}://{self.ip}:{self.port}/"
-        self._login()
+        self._prepare()
         self.result = {}
 
     @classmethod
@@ -27,23 +27,36 @@ class CheckerTemplate:
         else:
             return False
 
-    def _login(self):
+    def _prepare(self):
         return True
 
     def check(self):
         # TODO 读取类中_check函数的个数,自动调用
-        if self._check1() and self._check2():
-            self.result['status'] = True
-        else:
-            self.result['status'] = False
-            self.result['reason'] = '0xff'
+        self.result['status'] = True
+        for i in range(1, 5):
+            try:
+                checker = getattr(self, '_check' + str(i))
+            except AttributeError:
+                break
+            res = checker()
+            if not res[0]:
+                self.result['status'] = False
+                self.result['reason'] = res[1]
+                break
+        # if checker:
+        #     print(checker)
+        # if self._check1() and self._check2():
+        #     self.result['status'] = True
+        # else:
+        #     self.result['status'] = False
+        #     self.result['reason'] = '0xff'
+
         return self.result
 
     def _check1(self):
-        return True
+        # return False, 'reason'
+        return True, 'ok'
 
-    def _check2(self):
-        return True
 
     def __del__(self):
         if not self.result['status']:
@@ -57,3 +70,8 @@ class CheckerTemplate:
                 Down.objects.create(team=self.problem.team, rounds=self.problem.rounds, problem=self.problem)
         # self.problem.flag, command = generate_flag_command(self.problem.template.change_flag_command)
         # self.docker_controller.exec_container(self.problem.container_id, command)
+
+
+if __name__ == '__main__':
+    c = CheckerTemplate()
+    c.check()

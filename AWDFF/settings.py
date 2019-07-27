@@ -138,8 +138,10 @@ ADMIN_TOOLS_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
 ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'dashboard.CustomAppIndexDashboard'
 
 CRONJOBS = [
-    # 表示每过一分钟执行一次
-    ('*/1 * * * *', 'checker.start.check', '>> /tmp/check.log')
+    # 表示两分钟check一次
+    ('*/2 * * * *', 'checker.start.check', '>> /tmp/check.log'),
+    # 十分钟刷新一轮
+    ('*/10 * * * *', 'refresh.refresh.refresh_flag', '>> /tmp/refresh.log')
 ]
-
+# 0 0/1 * * * ?  echo 'test' >> /tmp/test.txt
 # 后面的>> /tmp/testapi_crontab.log' 表示将定时执行的函数的打印结果输出到已经在本机中建立好的log文件中，方便调试。

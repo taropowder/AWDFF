@@ -19,7 +19,7 @@ class solveProblemView(FormView):
             problem = Problem.objects.get(flag=form.data['flag'])
         except Problem.DoesNotExist:
             problem = None
-        if Problem:
+        if problem:
             try:
                 token_uuid = UUID(form.data['token'])
                 team = Team.objects.get(token=token_uuid)
