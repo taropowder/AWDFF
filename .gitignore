@@ -132,3 +132,4 @@ dmypy.json
 !**/migrations/__init__.py
 static/admin/**
 static/admin_tools/**
+static/**
