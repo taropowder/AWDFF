@@ -490,7 +490,7 @@
                         <div class='section-header'>
 
                             {% if request.user.team %}
-                                <h2>My Team Is<strong class='color'> {{ request.user.team }} </strong></h2>
+                                <h2>My Team Is<strong class='color'> {{ request.user.team }}  {{ request.user.team.score }} </strong></h2>
                             {% else %}
                                 <h2>You haven't a Team , Jion One Now</h2>
 
@@ -504,6 +504,7 @@
                                     <li class="layui-this">My Problem</li>
                                     <li>My Attack</li>
                                     <li>My Downtime</li>
+                                    <li>My Sheep</li>
                                 </ul>
                                 <div class="layui-tab-content">
                                     <div class="layui-tab-item layui-show">
@@ -555,6 +556,7 @@
                                                 <th>题目名称</th>
                                                 <th>攻陷队伍</th>
                                                 <th>题目分数</th>
+                                                <th>攻击轮次</th>
                                                 <th>攻破时间</th>
                                             </tr>
                                             </thead>
@@ -564,6 +566,7 @@
                                                     <td>{{ attack.problem.template.name }}</td>
                                                     <td>{{ attack.problem.team.name }}</td>
                                                     <td>{{ attack.score }}</td>
+                                                    <td>{{ attack.rounds }}</td>
                                                     <td>{{ attack.time }}</td>
                                                 </tr>
 
@@ -591,6 +594,31 @@
                                                     <td>{{ down.problem.template.name }}</td>
                                                     <td>{{ down.time }}</td>
                                                     <td>{{ down.rounds }}</td>
+                                                </tr>
+
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="layui-tab-item">
+                                        <table class="layui-table">
+                                            <colgroup>
+                                                <col width="150">
+                                                <col width="200">
+                                            </colgroup>
+                                            <thead>
+                                            <tr>
+                                                <th>题目名称</th>
+                                                <th>被攻陷时间</th>
+                                                <th>轮次</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for sheep in request.user.team.sheep %}
+                                                <tr>
+                                                    <td>{{ sheep.problem.template.name }}</td>
+                                                    <td>{{ sheep.time }}</td>
+                                                    <td>{{ sheep.rounds }}</td>
                                                 </tr>
 
                                             {% endfor %}
