@@ -36,7 +36,7 @@ class solveProblemView(FormView):
                         result['message'] = "已经提交过了,不能再提交了"
                         result['title'] = "提交失败"
                     else:
-                        acctack = Attack.objects.create(problem=problem, attack_team=team)
+                        acctack = Attack.objects.create(problem=problem, attack_team=team,rounds=problem.rounds)
                         problem.status = 'hacked'
                         problem.save()
                         result['message'] = "提交正确"
