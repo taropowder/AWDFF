@@ -67,9 +67,15 @@ class Problem(models.Model):
 
 class Attack(models.Model):
     problem = models.ForeignKey(Problem, on_delete=models.DO_NOTHING)
-    time = models.DateTimeField(auto_now=True)
+    time = models.DateTimeField(auto_now_add=True)
     attack_team = models.ForeignKey('team.Team', on_delete=models.CASCADE)
     rounds = models.IntegerField('比赛轮次', help_text="相同轮次内只可以攻击一次")
+
+    @property
+    def score(self):
+        init_scorce = self.problem.template.score
+        attack_team_count = Attack.objects.filter(rounds=self.rounds, problem=self.problem).count()
+        return init_scorce / attack_team_count
 
     def __str__(self):
         return self.attack_team.name + ">>>>HACK>>>>" + self.problem.team.name
@@ -80,8 +86,19 @@ class Attack(models.Model):
         ordering = ['-id']
 
 
+class Hack(models.Model):
+    problem = models.ForeignKey(Problem, on_delete=models.DO_NOTHING)
+    time = models.DateTimeField(auto_now_add=True)
+    rounds = models.IntegerField('比赛轮次', help_text="相同轮次内只可以攻击一次")
+
+    class Meta:
+        verbose_name = '被攻击记录'
+        verbose_name_plural = verbose_name
+        ordering = ['-id']
+
+
 class Down(models.Model):
-    time = models.DateTimeField('宕机时间', auto_now=True)
+    time = models.DateTimeField('宕机时间', auto_now_add=True)
     team = models.ForeignKey('team.Team', on_delete=models.CASCADE)
     rounds = models.IntegerField('比赛轮次', help_text="相同轮次内只会被判定宕机一次")
     problem = models.ForeignKey(Problem, on_delete=models.DO_NOTHING)

@@ -8,6 +8,7 @@ from .form import *
 from django.http import JsonResponse, HttpResponseRedirect
 from uuid import UUID
 
+
 # Create your views here.
 
 
@@ -29,14 +30,17 @@ class solveProblemView(FormView):
             if team:
                 if team != problem.team:
                     try:
-                        attack = Attack.objects.get(problem=problem,attack_team=team,rounds=problem.rounds)
+                        attack = Attack.objects.get(problem=problem, attack_team=team, rounds=problem.rounds)
                     except Attack.DoesNotExist:
                         attack = None
                     if attack:
                         result['message'] = "已经提交过了,不能再提交了"
                         result['title'] = "提交失败"
                     else:
-                        acctack = Attack.objects.create(problem=problem, attack_team=team,rounds=problem.rounds)
+                        acctack = Attack.objects.create(problem=problem, attack_team=team, rounds=problem.rounds)
+                        hacked = Hack.objects.filter(problem=problem, rounds=problem.rounds).first()
+                        if not hacked:
+                            hacked = Hack.objects.create(problem=problem, rounds=problem.rounds)
                         problem.status = 'hacked'
                         problem.save()
                         result['message'] = "提交正确"

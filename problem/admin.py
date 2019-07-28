@@ -6,6 +6,7 @@ from .views import InstantiateAllProblemView
 
 
 admin.site.register(ProblemTemplate)
+admin.site.register(Hack)
 
 
 @admin.register(Down)
