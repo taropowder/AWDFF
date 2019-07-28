@@ -6,7 +6,8 @@ from problem.models import Attack, Problem, Down
 # Create your models here.
 class Team(models.Model):
     name = models.CharField('队伍名称', max_length=50, unique=True)
-    token = models.CharField('队伍UUID', max_length=50, unique=True, default=uuid.uuid4,help_text="可用于提交flag,加入队伍")
+    token = models.CharField('队伍UUID', max_length=50, unique=True, default=uuid.uuid4, help_text="可用于提交flag,加入队伍")
+
     # token = models.UUIDField(default=uuid.uuid4, null=False, blank=False, verbose_name=u'队伍TOKEN',
     #                          help_text="可用于提交flag,加入队伍")
 
@@ -41,6 +42,20 @@ class Team(models.Model):
             except:
                 pass
         return integral
+
+    @property
+    def problems(self):
+        problems = Problem.objects.filter(team=self)
+        return problems
+
+    @property
+    def attacks(self):
+        attack = Attack.objects.filter(attack_team=self)
+        return attack
+
+    @property
+    def down(self):
+        return Down.objects.filter(team=self)
 
     def __str__(self):
         return self.name

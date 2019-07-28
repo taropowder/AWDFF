@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>alert</title>
+        <link rel="stylesheet" href="{% static 'layui/css/layui.css' %}">
+    <script src="{% static 'layui/layui.js' %}"></script>
+</head>
+<body>
+<script>
+    layui.use('layer', function(){
+        var layer = layui.layer;
+        layer.open({
+            title: '{{ title }}',
+            content: '{{ message }}',
+            success: function(layero){
+                var btn = layero.find('.layui-layer-btn');
+                btn.find('.layui-layer-btn0').attr({
+                    href: '{{ url }}'
+                });
+            }
+        });
+        setTimeout("javascript:location.href='{{ url }}'", 5000);
+    });
+</script>
+</body>
+</html>

@@ -1,11 +1,1033 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+
+    <title>AWDFF</title>
+
+
+    <!--=====================================================
+        CSS Stylesheets
+    =====================================================-->
+    <link rel='stylesheet' type='text/css' href='{% static 'competition/bootstrap/css/bootstrap.min.css' %}'>
+    <link rel='stylesheet' type='text/css' href='{% static 'competition/css/linea.css' %}'>
+    <link rel='stylesheet' type='text/css' href='{% static 'competition/css/ionicons.min.css' %}'>
+    <link rel='stylesheet' type='text/css' href='{% static 'competition/css/owl.carousel.css' %}'>
+    <link rel='stylesheet' type='text/css' href='{% static 'competition/css/magnific-popup.css' %}'>
+    <link rel='stylesheet' type='text/css' href='{% static 'competition/css/style.css' %}'>
+    <link rel="stylesheet" href="{% static 'layui/css/layui.css' %}">
+    <script src="{% static 'layui/layui.js' %}"></script>
+
+
 </head>
 <body>
-<a href="{% url 'team_list'%}">赛况</a>
-<a href="{% url 'submit_flag'%}">提交flag</a>
+
+
+<!--=====================================================
+    Preloader
+=====================================================-->
+<div id='preloader'>
+    <div class='loader'></div>
+    <div class='left'></div>
+    <div class='right'></div>
+</div>
+
+
+<div class='main-content'>
+
+    <!--=====================================================
+        Page Borders
+    =====================================================-->
+    <div class='page-border border-left'></div>
+    <div class='page-border border-right'></div>
+    <div class='page-border border-top'></div>
+    <div class='page-border border-bottom'></div>
+
+
+    <!--=====================================================
+        Menu Button
+    =====================================================-->
+    <a href='#' class='menu-btn'>
+				<span class='lines'>
+					<span class='l1'></span>
+					<span class='l2'></span>
+					<span class='l3'></span>
+				</span>
+    </a>
+
+
+    <!--=====================================================
+        Menu
+    =====================================================-->
+    <div class='menu'>
+        <div class='inner'>
+            <ul class='menu-items'>
+
+                <li>
+                    <a href='#' class='section-toggle' data-section='intro'>
+                        Home
+                    </a>
+                </li>
+
+                <li>
+                    <a href='#about' class='section-toggle' data-section='about'>
+                        About
+                    </a>
+                </li>
+                {% if request.user.is_authenticated %}
+                    <li>
+                        <a href='#info' class='section-toggle' data-section='info'>
+                            Info
+                        </a>
+                    </li>
+                    {% if request.user.team %}
+                        <li>
+                            <a href='#submit' class='section-toggle' data-section='submit'>
+                                SubmitFlag
+                            </a>
+                        </li>
+                        <li>
+                            <a href='#sheep' class='section-toggle' data-section='sheep'>
+                                Other Problem
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    <li>
+                        <a href='#rank' class='section-toggle' data-section='rank'>
+                            Rank
+                        </a>
+                    </li>
+                    <li>
+                        <a href='{% url 'logout' %}' class='section-toggle' data-section='logout'>
+                            Logout
+                        </a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href='#login' class='section-toggle' data-section='login'>
+                            login
+                        </a>
+                    </li>
+                    <li>
+                        <a href='#register' class='section-toggle' data-section='register'>
+                            register
+                        </a>
+                    </li>
+                {% endif %}
+{#                <li>#}
+{#                    <a href='#contact' class='section-toggle' data-section='contact'>#}
+{#                        Contact#}
+{#                    </a>#}
+{#                </li>#}
+
+
+            </ul>
+        </div>
+    </div>
+
+    <div class='animation-block'></div>
+
+
+    <!--=====================================================
+        Sections
+    =====================================================-->
+    <div class='sections'>
+
+        <!--=====================================================
+            Main Section
+        =====================================================-->
+        <section id='intro' class='section section-main active'>
+
+            <div class='container-fluid'>
+
+                <div class='v-align'>
+                    <div class='inner'>
+                        <div class='intro-text'>
+
+                            <h1>AWDFF</h1>
+
+                            <p>
+                                we play awd for fun
+                            </p>
+
+                            <div class='intro-btns'>
+
+                                <a href='#about' class='btn-custom section-toggle' data-section='about'>
+                                    About AWd
+                                </a>
+                                {% if request.user.is_authenticated %}
+                                    <li>
+                                        <a href='#info' class='section-toggle' data-section='info'>
+                                            Info
+                                        </a>
+                                    </li>
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!--=====================================================
+            About Section
+        =====================================================-->
+        <section id='about' class='section about-section border-d'>
+
+            <div class='section-block about-block'>
+                <div class='container-fluid'>
+
+                    <div class='section-header'>
+                        <h2>
+                            How To <strong class='color'>PLAY?</strong>
+                        </h2>
+                    </div>
+
+                    <div class='row'>
+
+
+                        <div class='col-md-12'>
+
+                            <div class='about-text'>
+                                <p>
+                                    you will get a account, log in with it
+                                </p>
+                                <p>
+                                    There may be one or more problem here,
+                                    one problem will have 2 port mapping out
+                                    one port is ssh port
+                                    you can ssh login your problem to fix your problem
+                                    one port is web port
+                                    you can access the web service and hack it
+                                    You need to attack others problem to
+                                    get flag, at the same time, you need defense yourself problem
+                                </p>
+
+                                <p>
+                                    every problem have score , when you attack success(get flag), you can get the
+                                    problem's score, but when multiple teams get one problem's flag, the problem's
+                                    flag will divide equally to teams which hack the problem
+                                </p>
+
+                            </div>
+
+                            <div class='about-btns'>
+
+{#                                <a href='/#' class='btn-custom btn-color'>#}
+{#                                    Download Resume#}
+{#                                </a>#}
+{##}
+{#                                <a href='#' class='btn-custom btn-color'>#}
+{#                                    Hire Me#}
+{#                                </a>#}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class='section-block services-block'>
+
+                <div class='container-fluid'>
+
+                    <div class='section-header'>
+
+                        <h2>Pay <strong class='color'>Attention TO</strong></h2>
+
+                    </div>
+
+
+                    <div class='row'>
+
+                        <div class='col-md-4'>
+                            <div class='service'>
+
+                                {#                                <div class='icon'>#}
+                                {#                                    <i class='icon-'></i>#}
+                                {#                                </div>#}
+
+                                <div class='content'>
+
+                                    <h4>checker</h4>
+
+                                    <p>
+                                        2 minutes will be launched a round of testing services is normal, when you are
+                                        fixing please pay attention to don't ￿impact the normal server
+                                    </p>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class='col-md-4'>
+                            <div class='service'>
+
+                                {#                                <div class='icon'>#}
+                                {#                                    <i class='icon-basic-keyboard'></i>#}
+                                {#                                </div>#}
+
+                                <div class='content'>
+
+                                    <h4>rounds</h4>
+
+                                    <p>
+                                        10 minutes will refresh flag, please don't forget submit your flag,
+                                        Otherwise it will be invalid
+                                    </p>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class='col-md-4'>
+                            <div class='service'>
+
+                                {#                                <div class='icon'>#}
+                                {#                                    <i class='ion-social-wordpress-outline'></i>#}
+                                {#                                </div>#}
+
+                                <div class='content'>
+
+                                    <h4>help</h4>
+
+                                    <p>
+                                        When your service is down and you cannot recover, you can contact us help you
+                                        reset your problem
+                                    </p>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+        {% if request.user.is_authenticated %}
+
+
+            <section id='submit' class='section resume-section border-d'>
+
+                <div class='section-block timeline-block'>
+
+                    <div class='container-fluid'>
+
+                        <div class='section-header'>
+
+                            <h2>Your Team Token is <br>
+                                <strong class='color'> {{ request.user.team.token }} </strong></h2>
+
+
+                        </div>
+                        <form class="layui-form" method="post" action="{% url 'submit_flag' %}">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">FLAG</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="flag" required lay-verify="required"
+                                           placeholder="Input Flag"
+                                           autocomplete="off" class="layui-input">
+                                </div>
+                                <input type="hidden" name="token" value="{{ request.user.team.token }}">
+                            </div>
+                            {% csrf_token %}
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit lay-filter="formDemo">SUBMIT</button>
+                                </div>
+                            </div>
+                        </form>
+
+
+                    </div>
+                </div>
+
+            </section>
+
+            <section id='sheep' class='section resume-section border-d'>
+
+                <div class='section-block timeline-block'>
+                    <div class='section-header'>
+
+                        <h2>Hack others <strong class='color'> Problem </strong></h2>
+
+
+                    </div>
+                    <div class='container-fluid'>
+
+
+                        <div class="layui-tab">
+                            <ul class="layui-tab-title">
+                                {% for temple in temples %}
+                                    <li>{{ temple }}</li>
+                                {% endfor %}
+                            </ul>
+                            <div class="layui-tab-content">
+                                {% for temple,problems in temples.items %}
+                                    <div class="layui-tab-item {% if forloop.first %}layui-show{% endif %}">
+                                        <table class="layui-table ">
+                                            <colgroup>
+                                                <col width="150">
+                                                <col width="200">
+                                                <col width="200">
+                                                <col>
+                                            </colgroup>
+                                            <thead>
+                                            <tr>
+                                                <th>题目名称</th>
+                                                <th>题目网址</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for problem in problems %}
+                                                <tr>
+                                                    <td>{{ temple }}</td>
+                                                    <td>
+                                                        <a href="{{ request.scheme }}://{{ host }}:{{ problem.web_external_port }}"
+                                                           target="_blank">{{ request.scheme }}://{{ host }}:{{ problem.web_external_port }}</a>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                {% endfor %}
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </section>
+            <section id='rank' class='section resume-section border-d'>
+
+                <div class='section-block timeline-block'>
+                    <div class='section-header'>
+
+                        <h2><strong class='color'> RANK </strong></h2>
+
+
+                    </div>
+                    <div class='container-fluid'>
+                        <table class="layui-table ">
+                            <colgroup>
+                                <col width="150">
+                                <col width="200">
+                                <col width="200">
+                                <col>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>队伍名称</th>
+                                <th>队伍分数</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for team in teams %}
+                                <tr>
+                                    <td>{{ team.name }}</td>
+                                    <td>{{ team.score }}</td>
+                                </tr>
+                            {% endfor %}
+
+
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </div>
+
+            </section>
+
+
+            <!--=====================================================
+                Info Section
+            =====================================================-->
+            <section id='info' class='section resume-section border-d'>
+
+                <div class='section-block timeline-block'>
+
+                    <div class='container-fluid'>
+
+                        <div class='section-header'>
+
+                            {% if request.user.team %}
+                                <h2>My Team Is<strong class='color'> {{ request.user.team }} </strong></h2>
+                            {% else %}
+                                <h2>You haven't a Team , Jion One Now</h2>
+
+                            {% endif %}
+
+
+                        </div>
+                        {% if request.user.team %}
+                            <div class="layui-tab">
+                                <ul class="layui-tab-title">
+                                    <li class="layui-this">My Problem</li>
+                                    <li>My Attack</li>
+                                    <li>My Downtime</li>
+                                </ul>
+                                <div class="layui-tab-content">
+                                    <div class="layui-tab-item layui-show">
+                                        <table class="layui-table">
+                                            <colgroup>
+                                                <col width="200">
+                                                <col width="200">
+                                                <col width="200">
+                                                <col width="200">
+                                                <col width="200">
+                                            </colgroup>
+                                            <thead>
+                                            <tr>
+                                                <th>题目名称</th>
+                                                <th>web端口</th>
+                                                <th>ssh端口</th>
+                                                <th>ssh密码</th>
+                                                <th>比赛轮次</th>
+                                                <th>服务状态</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for problem in request.user.team.problems %}
+                                                <tr>
+                                                    <td>{{ problem.template.name }}</td>
+                                                    <td>{{ problem.web_external_port }}</td>
+                                                    <td>{{ problem.ssh_external_port }}</td>
+                                                    <td>{{ problem.ssh_passwd }}</td>
+                                                    <td>{{ problem.rounds }}</td>
+                                                    <td>{{ problem.status }}</td>
+                                                </tr>
+
+                                            {% endfor %}
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                    <div class="layui-tab-item">
+                                        <table class="layui-table">
+                                            <colgroup>
+                                                <col width="150">
+                                                <col width="200">
+                                                <col width="200">
+                                                <col>
+                                            </colgroup>
+                                            <thead>
+                                            <tr>
+                                                <th>题目名称</th>
+                                                <th>攻陷队伍</th>
+                                                <th>题目分数</th>
+                                                <th>攻破时间</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for attack in request.user.team.attacks %}
+                                                <tr>
+                                                    <td>{{ attack.problem.template.name }}</td>
+                                                    <td>{{ attack.problem.team.name }}</td>
+                                                    <td>{{ attack.problem.score }}</td>
+                                                    <td>{{ attack.problem.time }}</td>
+                                                </tr>
+
+                                            {% endfor %}
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="layui-tab-item">
+                                        <table class="layui-table">
+                                            <colgroup>
+                                                <col width="150">
+                                                <col width="200">
+                                            </colgroup>
+                                            <thead>
+                                            <tr>
+                                                <th>题目名称</th>
+                                                <th>宕机时间</th>
+                                                <th>轮次</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for down in request.user.team.down %}
+                                                <tr>
+                                                    <td>{{ down.problem.template.name }}</td>
+                                                    <td>{{ down.time }}</td>
+                                                    <td>{{ down.rounds }}</td>
+                                                </tr>
+
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        {% else %}
+                            <form class="layui-form" method="post" action="{% url 'join_team' %}">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">Team Token</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="token" required lay-verify="required"
+                                               placeholder="Input Team Token"
+                                               autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                                {% csrf_token %}
+                                <div class="layui-form-item">
+                                    <div class="layui-input-block">
+                                        <button class="layui-btn" lay-submit lay-filter="formDemo">Join it</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        {% endif %}
+
+                    </div>
+                </div>
+
+            </section>
+        {% else %}
+
+            <!--=====================================================
+                login Section
+            =====================================================-->
+            <section id='login' class='section contact-section border-d'>
+
+                <div class='section-block contact-block'>
+
+                    <div class='container-fluid'>
+
+                        <div class='section-header'>
+                            <h2>login <strong class='color'>IN</strong></h2>
+                        </div>
+
+
+                        <div class='row'>
+
+                            <div class='col-md-8'>
+
+                                <div class='contact-form'>
+
+                                    <form id='contact-form' data-toggle='validator' method='post'
+                                          action='{% url 'login' %}'>
+                                        {% csrf_token %}
+                                        <div id='contact-form-result'></div>
+
+                                        <div class='row'>
+
+                                            <div class='col-md-6'>
+                                                <div class='form-group'>
+
+                                                    <input type='text' class='form-control' placeholder='username'
+                                                           name='username' required>
+                                                    <div class='help-block with-errors'></div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class='row'>
+
+                                            <div class='col-md-6'>
+                                                <div class='form-group'>
+
+                                                    <input type='password' class='form-control' placeholder='password'
+                                                           name='password' required>
+                                                    <div class='help-block with-errors'></div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class='row'>
+
+                                            <div class='col-md-6'>
+                                                <div class='form-group text-center'>
+                                                    <button type='submit' class='btn-custom btn-color'>
+                                                        LOGIN IN
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+                                    </form>
+
+                                </div>
+
+
+                            </div>
+
+                            <div class='col-md-4'>
+
+                                <div class='contact-info-icons'>
+
+                                    <div class='contact-info'>
+                                        <i class='ion-log-in'></i>
+
+                                        <p>
+                                            login to your team
+                                        </p>
+
+                                    </div>
+
+
+                                    <div class='contact-info'>
+
+                                        <i class='ion-alert'></i>
+
+                                        <p>
+                                            Please pay attention to time
+                                        </p>
+
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </section>
+            <section id='register' class='section contact-section border-d'>
+
+                <div class='section-block contact-block'>
+
+                    <div class='container-fluid'>
+
+                        <div class='section-header'>
+                            <h2> Sign<strong class='color'>UP</strong></h2>
+                        </div>
+
+
+                        <div class='row'>
+
+                            <div class='col-md-8'>
+
+                                <div class='contact-form'>
+
+                                    <form id='contact-form' data-toggle='validator' method='post'
+                                          action='{% url 'register' %}'>
+                                        {% csrf_token %}
+                                        <div id='contact-form-result'></div>
+
+                                        <div class='row'>
+
+                                            <div class='col-md-6'>
+                                                <div class='form-group'>
+
+                                                    <input type='text' class='form-control' placeholder='username'
+                                                           name='username' required>
+                                                    <div class='help-block with-errors'></div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class='row'>
+
+                                            <div class='col-md-6'>
+                                                <div class='form-group'>
+
+                                                    <input type='password' class='form-control' placeholder='password'
+                                                           name='password' required>
+                                                    <div class='help-block with-errors'></div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class='row'>
+
+                                            <div class='col-md-6'>
+                                                <div class='form-group'>
+
+                                                    <input type='email' class='form-control' placeholder='email'
+                                                           name='email' required>
+                                                    <div class='help-block with-errors'></div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class='row'>
+
+                                            <div class='col-md-6'>
+                                                <div class='form-group'>
+
+                                                    <input type='text' class='form-control' placeholder='organization'
+                                                           name='organization' required>
+                                                    <div class='help-block with-errors'></div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class='row'>
+
+                                            <div class='col-md-6'>
+                                                <div class='form-group text-center'>
+                                                    <button type='submit' class='btn-custom btn-color'>
+                                                        SIGN UP
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+                                    </form>
+
+                                </div>
+
+
+                            </div>
+
+                            <div class='col-md-4'>
+
+                                <div class='contact-info-icons'>
+
+                                    <div class='contact-info'>
+                                        <i class='ion-log-in'></i>
+
+                                        <p>
+                                            login to your team
+                                        </p>
+
+                                    </div>
+
+
+                                    <div class='contact-info'>
+
+                                        <i class='ion-alert'></i>
+
+                                        <p>
+                                            Please pay attention to time
+                                        </p>
+
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        {% endif %}
+
+        <!--=====================================================
+            Portfolio Section
+        =====================================================-->
+
+
+        <!--=====================================================
+            Contact Section
+        =====================================================-->
+        <section id='contact' class='section contact-section border-d'>
+
+            <div class='section-block contact-block'>
+
+                <div class='container-fluid'>
+
+                    <div class='section-header'>
+                        <h2>Contact <strong class='color'>Me</strong></h2>
+                    </div>
+
+
+                    <div class='row'>
+
+                        <div class='col-md-8'>
+
+                            <div class='contact-form'>
+
+                                <form id='contact-form' data-toggle='validator' method='post' action='mail.php'>
+
+                                    <div id='contact-form-result'></div>
+
+                                    <div class='row'>
+
+                                        <div class='col-md-6'>
+                                            <div class='form-group'>
+
+                                                <input type='text' class='form-control' placeholder='Name' name='name'
+                                                       required>
+                                                <div class='help-block with-errors'></div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class='col-md-6'>
+                                            <div class='form-group'>
+
+                                                <input type='email' class='form-control' placeholder='Email'
+                                                       name='email' required>
+                                                <div class='help-block with-errors'></div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class='form-group'>
+
+                                        <input type='text' class='form-control' placeholder='Subject' name='subject'
+                                               required>
+                                        <div class='help-block with-errors'></div>
+
+                                    </div>
+
+                                    <div class='form-group'>
+
+                                        <textarea class='form-control' placeholder='Message' name='message' rows='5'
+                                                  required></textarea>
+                                        <div class='help-block with-errors'></div>
+
+                                    </div>
+
+                                    <div class='form-group text-center'>
+                                        <button type='submit' class='btn-custom btn-color'>
+                                            Send Message
+                                        </button>
+                                    </div>
+
+                                </form>
+
+                            </div>
+
+
+                        </div>
+
+                        <div class='col-md-4'>
+
+                            <div class='contact-info-icons'>
+
+                                <div class='contact-info'>
+
+                                    <i class='ion-ios-location-outline'></i>
+
+                                    <p>
+                                        1254 Patterson Street<br>
+                                        Houston, TX 77025
+                                    </p>
+
+                                </div>
+
+
+                                <div class='contact-info'>
+
+                                    <i class='ion-ios-telephone-outline'></i>
+
+                                    <p>
+                                        (+123) 713-295-4383<br>
+                                        (+123) 913-295-2583
+                                    </p>
+
+                                </div>
+
+
+                                <div class='contact-info'>
+
+                                    <i class='ion-android-globe'></i>
+
+                                    <p>
+                                        www.google.com<br>
+                                        www.example.com
+                                    </p>
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</div>
+<script>
+    //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function () {
+        var element = layui.element;
+
+        //…
+    });
+</script>
+
+<!--=====================================================
+    JavaScript Files
+=====================================================-->
+<script src='{% static 'competition/js/jquery.min.js' %}'></script>
+<script src='{% static 'competition/js/jquery.shuffle.min.js' %}'></script>
+<script src='{% static 'competition/js/owl.carousel.min.js' %}'></script>
+<script src='{% static 'competition/js/jquery.magnific-popup.min.js' %}'></script>
+<script src='{% static 'competition/js/validator.min.js' %}'></script>
+<script src='{% static 'competition/js/script.js' %}'></script>
+
 </body>
 </html>

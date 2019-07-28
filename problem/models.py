@@ -47,6 +47,14 @@ class Problem(models.Model):
     time = models.DateTimeField(auto_now=True)
     rounds = models.IntegerField('比赛轮次', default=0)
 
+    @property
+    def score(self):
+        attack = Attack.objects.filter(problem=self)
+        if attack.first():
+            return self.template.score / len(attack)
+        else:
+            return self.template.score
+
     def __str__(self):
         return self.container_id + ">>>>>>>" + self.team.name
 

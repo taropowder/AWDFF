@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import DetailView, UpdateView, CreateView, FormView, ListView
 from problem.models import *
 from team.models import *
@@ -10,18 +12,17 @@ from uuid import UUID
 
 
 class solveProblemView(FormView):
-    template_name = 'competition/submitFLAG.html'
-    form_class = ProblemFrom
 
-    def form_valid(self, form):
+    def post(self, request):
         result = {}
+        result['url'] = reverse_lazy('home') + '#submit'
         try:
-            problem = Problem.objects.get(flag=form.data['flag'])
+            problem = Problem.objects.get(flag=request.POST.get('flag'))
         except Problem.DoesNotExist:
             problem = None
         if problem:
             try:
-                token_uuid = UUID(form.data['token'])
+                token_uuid = UUID(request.POST.get('token'))
                 team = Team.objects.get(token=token_uuid)
             except Team.DoesNotExist:
                 team = None
@@ -33,23 +34,25 @@ class solveProblemView(FormView):
                         attack = None
                     if attack:
                         result['message'] = "已经提交过了,不能再提交了"
-                        result['status'] = False
+                        result['title'] = "提交失败"
                     else:
                         acctack = Attack.objects.create(problem=problem, attack_team=team)
                         problem.status = 'hacked'
                         problem.save()
                         result['message'] = "提交正确"
-                        result['status'] = True
+                        result['title'] = "提交成功"
+                        result['url'] = reverse_lazy('home') + '#info'
+
                 else:
                     result['message'] = "你不能提交自己的FLAG"
-                    result['status'] = False
+                    result['title'] = "提交失败"
             else:
                 result['message'] = "TOKEN异常"
-                result['status'] = False
+                result['title'] = "提交失败"
         else:
             result['message'] = "FLAG错误"
-            result['status'] = False
-        return JsonResponse(result)
+            result['title'] = "提交失败"
+        return render(request, 'alert.html', result)
 
 
 class TeamListView(ListView):

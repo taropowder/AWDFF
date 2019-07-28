@@ -20,8 +20,9 @@ from .view import home
 
 urlpatterns = [
     url(r'^admin_tools/', include('admin_tools.urls')),
-    url(r'^$', home),
+    url(r'^$', home, name='home'),
     path('admin/', admin.site.urls),
     path('problem/', include('problem.urls')),
+    path('account/', include('account.urls')),
     path('competition/', include('competition.urls'))
 ]
