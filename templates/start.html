@@ -120,11 +120,11 @@
                         </a>
                     </li>
                 {% endif %}
-{#                <li>#}
-{#                    <a href='#contact' class='section-toggle' data-section='contact'>#}
-{#                        Contact#}
-{#                    </a>#}
-{#                </li>#}
+                {#                <li>#}
+                {#                    <a href='#contact' class='section-toggle' data-section='contact'>#}
+                {#                        Contact#}
+                {#                    </a>#}
+                {#                </li>#}
 
 
             </ul>
@@ -225,13 +225,13 @@
 
                             <div class='about-btns'>
 
-{#                                <a href='/#' class='btn-custom btn-color'>#}
-{#                                    Download Resume#}
-{#                                </a>#}
-{##}
-{#                                <a href='#' class='btn-custom btn-color'>#}
-{#                                    Hire Me#}
-{#                                </a>#}
+                                {#                                <a href='/#' class='btn-custom btn-color'>#}
+                                {#                                    Download Resume#}
+                                {#                                </a>#}
+                                {##}
+                                {#                                <a href='#' class='btn-custom btn-color'>#}
+                                {#                                    Hire Me#}
+                                {#                                </a>#}
 
                             </div>
 
@@ -401,6 +401,7 @@
                                             <tr>
                                                 <th>题目名称</th>
                                                 <th>题目网址</th>
+                                                <th>轮次</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -411,6 +412,8 @@
                                                         <a href="{{ request.scheme }}://{{ host }}:{{ problem.web_external_port }}"
                                                            target="_blank">{{ request.scheme }}://{{ host }}:{{ problem.web_external_port }}</a>
                                                     </td>
+                                                    <td>{{ problem.rounds }}</td>
+
                                                 </tr>
                                             {% endfor %}
 
