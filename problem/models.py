@@ -14,9 +14,10 @@ class ProblemTemplate(models.Model):
                                              default=ADD_USER_COMMAND,
                                              help_text="请用{passwd} 替换密码的位置,"
                                                        "如环境内存在openssl并且不存在user用户则不需要修改此命令")
-    change_flag_command = models.TextField('修改flag的命令', help_text='请用{flag}替换flag的位置,注意：如果需要重定向写入flag'
-                                                                  '需要显式调用可执行文件,例如： '
-                                                                  'bash -c \"echo \'{flag}\' > /flag\"')
+    change_flag_command = models.TextField('修改flag的命令', default='bash -c \"echo \'{flag}\' > /flag\"',
+                                           help_text='请用{flag}替换flag的位置,注意：如果需要重定向写入flag'
+                                                     '需要显式调用可执行文件,例如： '
+                                                     'bash -c \"echo \'{flag}\' > /flag\"')
 
     time = models.DateTimeField(auto_now=True)
 
