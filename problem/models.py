@@ -69,6 +69,7 @@ class Attack(models.Model):
     problem = models.ForeignKey(Problem, on_delete=models.DO_NOTHING)
     time = models.DateTimeField(auto_now=True)
     attack_team = models.ForeignKey('team.Team', on_delete=models.CASCADE)
+    rounds = models.IntegerField('比赛轮次', help_text="相同轮次内只可以攻击一次")
 
     def __str__(self):
         return self.attack_team.name + ">>>>HACK>>>>" + self.problem.team.name

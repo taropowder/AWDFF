@@ -29,7 +29,7 @@ class solveProblemView(FormView):
             if team:
                 if team != problem.team:
                     try:
-                        attack = Attack.objects.get(problem=problem,attack_team=team)
+                        attack = Attack.objects.get(problem=problem,attack_team=team,rounds=problem.rounds)
                     except Attack.DoesNotExist:
                         attack = None
                     if attack:
