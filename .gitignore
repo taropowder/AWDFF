@@ -133,3 +133,5 @@ dmypy.json
 static/admin/**
 static/admin_tools/**
 static/**
+# checker.py
+checker/checkers/**
