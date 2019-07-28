@@ -91,6 +91,9 @@ class Hack(models.Model):
     time = models.DateTimeField(auto_now_add=True)
     rounds = models.IntegerField('比赛轮次', help_text="相同轮次内只可以攻击一次")
 
+    def __str__(self):
+        return self.problem.team.name + f"ROUND {self.rounds}  be hacked"
+
     class Meta:
         verbose_name = '被攻击记录'
         verbose_name_plural = verbose_name
