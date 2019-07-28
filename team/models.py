@@ -58,7 +58,7 @@ class Team(models.Model):
 
     @property
     def sheep(self):
-        return Hack.objects.filter(team=self)
+        return Hack.objects.filter(problem__team=self)
 
     def __str__(self):
         return self.name
