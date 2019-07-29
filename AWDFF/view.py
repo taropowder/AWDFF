@@ -22,12 +22,13 @@ def home(request):
     now = int(time.time())
     context['host'] = host
     context['time'] = {'name': None, 'start': True, 'last_time': None}
-    check_start_time = START_TIME
-    if check_start_time:
-        context['time']['last_time'] = (check_start_time - now) % 600
+
     if START_TIME and END_TIME:
         start_time = time.mktime(time.strptime(START_TIME, "%Y/%m/%d %H:%M:%S"))
         end_time = time.mktime(time.strptime(END_TIME, "%Y/%m/%d %H:%M:%S"))
+        check_start_time = start_time
+        if check_start_time:
+            context['time']['last_time'] = (check_start_time - now) % 600
         if start_time - now > 0:
             context['time']['name'] = "开始时间"
             context['time']['time'] = START_TIME
