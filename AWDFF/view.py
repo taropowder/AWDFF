@@ -13,7 +13,9 @@ def home(request):
     teams = Team.objects.all()
     context['teams'] = sorted(teams, key=lambda t: t.score, reverse=True)
     host = request.META['HTTP_HOST']
-    host_without_port = re.search(r'(.+):.+', host).group(1)
+    host_without_port = re.search(r'(.+):.+', host)
+    if host_without_port:
+        host_without_port=host_without_port.group(1)
     if host_without_port:
         host = host_without_port
     context['host'] = host
