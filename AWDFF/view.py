@@ -1,9 +1,12 @@
 from django.shortcuts import render
 import re
 import time
+import os
 from .settings import END_TIME, START_TIME
 from problem.models import Problem, ProblemTemplate
 from team.models import Team
+
+START_CHECK_TIME = None
 
 
 def home(request):
@@ -22,13 +25,13 @@ def home(request):
     now = int(time.time())
     context['host'] = host
     context['time'] = {'name': None, 'start': True, 'last_time': None}
-
+    if os.path.exists('/tmp/start_check.txt'):
+        with open('/tmp/start_check.txt') as f:
+            check_start_time = int(f.read())
+            context['time']['last_time'] = (check_start_time - now) % 600
     if START_TIME and END_TIME:
         start_time = time.mktime(time.strptime(START_TIME, "%Y/%m/%d %H:%M:%S"))
         end_time = time.mktime(time.strptime(END_TIME, "%Y/%m/%d %H:%M:%S"))
-        check_start_time = start_time
-        if check_start_time:
-            context['time']['last_time'] = (check_start_time - now) % 600
         if start_time - now > 0:
             context['time']['name'] = "开始时间"
             context['time']['time'] = START_TIME
