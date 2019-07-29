@@ -19,10 +19,13 @@ def home(request):
         host_without_port = host_without_port.group(1)
     if host_without_port:
         host = host_without_port
-    context['host'] = host
-    context['time'] = {'name': None, 'start': True}
     now = int(time.time())
-    if START_TIME:
+    context['host'] = host
+    context['time'] = {'name': None, 'start': True, 'last_time': None}
+    check_start_time = START_TIME
+    if check_start_time:
+        context['time']['last_time'] = (check_start_time - now) % 600
+    if START_TIME and END_TIME:
         start_time = time.mktime(time.strptime(START_TIME, "%Y/%m/%d %H:%M:%S"))
         end_time = time.mktime(time.strptime(END_TIME, "%Y/%m/%d %H:%M:%S"))
         if start_time - now > 0:

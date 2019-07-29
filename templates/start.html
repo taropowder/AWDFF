@@ -396,7 +396,10 @@
                                     <h2>You haven't a Team , Jion One Now</h2>
 
                                 {% endif %}
+                                <div id="round_time" style="font-size: 30px;color: red"></div>
 
+
+                                </p>
 
                             </div>
                             {% if request.user.team %}
@@ -568,6 +571,7 @@
                         <div class='section-header'>
 
                             <h2>Hack others <strong class='color'> Problem </strong></h2>
+                                <div id="round_time_sheep" style="font-size: 30px;color: red"></div>
 
 
                         </div>
@@ -1090,6 +1094,25 @@
                 }
                 layui.$('#time').html('距离{{ time.name }}还有：' + str);
             });
+            {% if time.last_time  %}
+                var lastTime = {{ time.last_time }} * 1000;
+                var roundTime = serverTime + lastTime;
+                util.countdown(roundTime, serverTime, function (date, serverTime, timer) {
+                    var str = date[0] + '天' + date[1] + '时' + date[2] + '分' + date[3] + '秒';
+                    var refresh = 1;
+                    for (var i = 0; i <= 3; i++) {
+                        if (date[i] != 0) {
+                            refresh = 0;
+                        }
+                    }
+                    if (refresh) {
+                       location.reload();
+                     }
+                    layui.$('#round_time').html('本轮还有：' + str);
+                    layui.$('#round_time_sheep').html('本轮还有：' + str);
+                });
+            {% endif %}
+
         });
     {% endif %}
 
