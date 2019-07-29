@@ -11,6 +11,8 @@ And to activate the app index dashboard::
 """
 from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
+from AWDFF import settings
+
 try:
     from django.urls import reverse
 except ImportError:
@@ -24,6 +26,7 @@ class CustomIndexDashboard(Dashboard):
     """
     Custom index dashboard for AWDFF.
     """
+
     def init_with_context(self, context):
         site_name = get_admin_site_name(context)
         # append a link list module for "quick links"
@@ -76,6 +79,46 @@ class CustomIndexDashboard(Dashboard):
         #     limit=5
         # ))
 
+        self.children.append(modules.LinkList(
+            _('比赛信息'),
+            children=[
+                {
+                    'title': f'开始时间  {settings.START_TIME}',
+                    'url': '#',
+                    'external': False,
+                },
+                {
+                    'title': f'结束时间  {settings.END_TIME}',
+                    'url': '#',
+                    'external': False,
+                },
+                {
+                    'title': f'check 频率 {settings.CHECK_TIME_INTERVAL}min 1次',
+                    'url': '#',
+                    'external': False,
+                },
+                {
+                    'title': f'每轮时间 {settings.CHECK_TIME_INTERVAL}min',
+                    'url': '#',
+                    'external': False,
+                },
+                {
+                    'title': f'check日志位置 {settings.CHECK_LOG}',
+                    'url': '#',
+                    'external': False,
+                },
+                {
+                    'title': f'刷新轮次日志位置 {settings.ROUND_LOG}',
+                    'url': '#',
+                    'external': False,
+                },
+                {
+                    'title': f'PLAY NOW模式 {settings.PLAY_NOW}',
+                    'url': '#',
+                    'external': False,
+                },
+            ]
+        ))
         # append another link list module for "support".
         self.children.append(modules.LinkList(
             _('Support'),
@@ -97,8 +140,6 @@ class CustomIndexDashboard(Dashboard):
                 },
             ]
         ))
-
-
 
 
 class CustomAppIndexDashboard(AppIndexDashboard):
@@ -126,4 +167,5 @@ class CustomAppIndexDashboard(AppIndexDashboard):
         """
         Use this method if you need to access the request context.
         """
+
         return super(CustomAppIndexDashboard, self).init_with_context(context)
