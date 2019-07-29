@@ -17,7 +17,10 @@ class CheckerTemplate:
         self.port = problem.web_external_port
         self.session = requests.Session()
         self.url = f"{self.protocol}://{self.ip}:{self.port}/"
-        self._prepare()
+        try:
+            self._prepare()
+        except Exception as e:
+            pass
         self.result = {}
 
     @classmethod
@@ -38,7 +41,10 @@ class CheckerTemplate:
                 checker = getattr(self, '_check' + str(i))
             except AttributeError:
                 break
-            res = checker()
+            try:
+                res = checker()
+            except Exception as e:
+                res = [False, e]
             if not res[0]:
                 self.result['status'] = False
                 self.result['reason'] = res[1]
@@ -56,7 +62,6 @@ class CheckerTemplate:
     def _check1(self):
         # return False, 'reason'
         return True, 'ok'
-
 
     def __del__(self):
         if not self.result['status']:
