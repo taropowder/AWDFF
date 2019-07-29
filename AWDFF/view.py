@@ -2,7 +2,7 @@ from django.shortcuts import render
 import re
 import time
 import os
-from .settings import END_TIME, START_TIME, ROUND_TIME_INTERVAL
+from .settings import END_TIME, START_TIME, ROUND_TIME_INTERVAL,PLAY_NOW
 from problem.models import Problem, ProblemTemplate
 from team.models import Team
 
@@ -28,7 +28,12 @@ def home(request):
     if START_TIME and END_TIME:
         start_time = time.mktime(time.strptime(START_TIME, "%Y/%m/%d %H:%M:%S"))
         end_time = time.mktime(time.strptime(END_TIME, "%Y/%m/%d %H:%M:%S"))
-        context['time']['last_time'] = (start_time - now) % (60 * ROUND_TIME_INTERVAL)
+        if PLAY_NOW and os.path.exists('/tmp/start_check.txt'):
+            with open('/tmp/start_check.txt') as f:
+                check_start_time = int(f.read())
+                context['time']['last_time'] = (check_start_time - now) % (60 * ROUND_TIME_INTERVAL)
+        else:
+            context['time']['last_time'] = (start_time - now) % (60 * ROUND_TIME_INTERVAL)
         if start_time - now > 0:
             context['time']['name'] = "开始时间"
             context['time']['time'] = START_TIME

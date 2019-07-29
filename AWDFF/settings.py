@@ -145,6 +145,11 @@ ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'dashboard.CustomAppIndexDashboard'
 # 后面的>> /tmp/testapi_crontab.log' 表示将定时执行的函数的打印结果输出到已经在本机中建立好的log文件中，方便调试。
 CONFIG_YML = os.path.join(BASE_DIR, 'config.yml')
 
+if not os.path.exists(CONFIG_YML):
+    print('there is no config.yml, please check are you init')
+    exit()
+
+
 with open(CONFIG_YML, 'r') as f:
     config = yaml.safe_load(f.read())
     START_TIME = config['start_time']
@@ -155,20 +160,26 @@ with open(CONFIG_YML, 'r') as f:
     ROUND_TIME_INTERVAL = config['round_time_interval']
     CHECK_LOG = config['check_log']
     ROUND_LOG = config['round_log']
-_start_time = time.strptime(START_TIME, "%Y/%m/%d %H:%M:%S")
-_end_time = time.strptime(END_TIME, "%Y/%m/%d %H:%M:%S")
+    PLAY_NOW = config['play_now']
+if not PLAY_NOW:
+    _start_time = time.strptime(START_TIME, "%Y/%m/%d %H:%M:%S")
+    _end_time = time.strptime(END_TIME, "%Y/%m/%d %H:%M:%S")
 
-CRON_TEMPLATE = '*/{times} {start_hour}-{end_hour} {start_day}-{end_day} {month} *'
+    CRON_TEMPLATE = '*/{times} {start_hour}-{end_hour} {start_day}-{end_day} {month} *'
 
-CHECKER_CRON = CRON_TEMPLATE.format(times=CHECK_TIME_INTERVAL, start_hour=_start_time.tm_hour,
-                                    end_hour=_end_time.tm_hour
-                                    , start_day=_start_time.tm_mday, end_day=_end_time.tm_mday,
-                                    month=_start_time.tm_mon)
+    CHECKER_CRON = CRON_TEMPLATE.format(times=CHECK_TIME_INTERVAL, start_hour=_start_time.tm_hour,
+                                        end_hour=_end_time.tm_hour
+                                        , start_day=_start_time.tm_mday, end_day=_end_time.tm_mday,
+                                        month=_start_time.tm_mon)
 
-ROUND_CRON = CRON_TEMPLATE.format(times=ROUND_TIME_INTERVAL, start_hour=_start_time.tm_hour,
-                                  end_hour=_end_time.tm_hour
-                                  , start_day=_start_time.tm_mday, end_day=_end_time.tm_mday,
-                                  month=_start_time.tm_mon)
+    ROUND_CRON = CRON_TEMPLATE.format(times=ROUND_TIME_INTERVAL, start_hour=_start_time.tm_hour,
+                                      end_hour=_end_time.tm_hour
+                                      , start_day=_start_time.tm_mday, end_day=_end_time.tm_mday,
+                                      month=_start_time.tm_mon)
+else:
+    CRON_TEMPLATE = '*/{times} * * * *'
+    CHECKER_CRON = CRON_TEMPLATE.format(times=CHECK_TIME_INTERVAL)
+    ROUND_CRON = CRON_TEMPLATE.format(times=ROUND_TIME_INTERVAL)
 
 CRONJOBS = [
     # 表示两分钟check一次

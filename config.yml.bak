@@ -4,3 +4,4 @@ check_time_interval: 2
 round_time_interval: 10
 check_log: '/tmp/check.log'
 round_log: '/tmp/round.log'
+play_now: True
