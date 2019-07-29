@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import time
+import yaml
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -139,13 +141,38 @@ ADMIN_TOOLS_MENU = 'menu.CustomMenu'
 ADMIN_TOOLS_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
 ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'dashboard.CustomAppIndexDashboard'
 
+# * 0/1 * * * ?   echo 'test' >> /tmp/test.txt
+# 后面的>> /tmp/testapi_crontab.log' 表示将定时执行的函数的打印结果输出到已经在本机中建立好的log文件中，方便调试。
+CONFIG_YML = os.path.join(BASE_DIR, 'config.yml')
+
+with open(CONFIG_YML, 'r') as f:
+    config = yaml.safe_load(f.read())
+    START_TIME = config['start_time']
+    END_TIME = config['end_time']
+    # check时间
+    CHECK_TIME_INTERVAL = config['check_time_interval']
+    # 每轮持续时间
+    ROUND_TIME_INTERVAL = config['round_time_interval']
+    CHECK_LOG = config['check_log']
+    ROUND_LOG = config['round_log']
+_start_time = time.strptime(START_TIME, "%Y/%m/%d %H:%M:%S")
+_end_time = time.strptime(END_TIME, "%Y/%m/%d %H:%M:%S")
+
+CRON_TEMPLATE = '*/{times} {start_hour}-{end_hour} {start_day}-{end_day} {month} *'
+
+CHECKER_CRON = CRON_TEMPLATE.format(times=CHECK_TIME_INTERVAL, start_hour=_start_time.tm_hour,
+                                    end_hour=_end_time.tm_hour
+                                    , start_day=_start_time.tm_mday, end_day=_end_time.tm_mday,
+                                    month=_start_time.tm_mon)
+
+ROUND_CRON = CRON_TEMPLATE.format(times=ROUND_TIME_INTERVAL, start_hour=_start_time.tm_hour,
+                                  end_hour=_end_time.tm_hour
+                                  , start_day=_start_time.tm_mday, end_day=_end_time.tm_mday,
+                                  month=_start_time.tm_mon)
+
 CRONJOBS = [
     # 表示两分钟check一次
-    ('*/2 * * * *', 'checker.start.check', '>> /tmp/check.log'),
+    (CHECKER_CRON, 'checker.start.check', f'>> {CHECK_LOG}'),
     # 十分钟刷新一轮
-    ('*/10 * * * *', 'refresh.refresh.refresh_flag', '>> /tmp/refresh.log')
+    (ROUND_CRON, 'refresh.refresh.refresh_flag', f'>> {ROUND_LOG}')
 ]
-# 0 0/1 * * * ?  echo 'test' >> /tmp/test.txt
-# 后面的>> /tmp/testapi_crontab.log' 表示将定时执行的函数的打印结果输出到已经在本机中建立好的log文件中，方便调试。
-START_TIME = "2019/7/29 11:30:00"
-END_TIME = "2019/7/29 13:00:00"

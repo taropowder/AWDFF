@@ -1,0 +1,6 @@
+start_time: '2019/7/29 15:00:00'
+end_time: '2019/7/29 19:00:00'
+check_time_interval: 2
+round_time_interval: 10
+check_log: '/tmp/check.log'
+round_log: '/tmp/round.log'
