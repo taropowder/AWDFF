@@ -98,7 +98,7 @@ class CustomIndexDashboard(Dashboard):
                     'external': False,
                 },
                 {
-                    'title': f'每轮时间 {settings.ROUND_TIME_INTERVALL}min',
+                    'title': f'每轮时间 {settings.ROUND_TIME_INTERVAL}min',
                     'url': '#',
                     'external': False,
                 },
