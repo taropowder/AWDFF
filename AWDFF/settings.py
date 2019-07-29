@@ -147,3 +147,5 @@ CRONJOBS = [
 ]
 # 0 0/1 * * * ?  echo 'test' >> /tmp/test.txt
 # 后面的>> /tmp/testapi_crontab.log' 表示将定时执行的函数的打印结果输出到已经在本机中建立好的log文件中，方便调试。
+START_TIME = "2019/7/29 11:30:00"
+END_TIME = "2019/7/29 12:00:00"

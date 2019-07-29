@@ -1,6 +1,7 @@
 from django.shortcuts import render
 import re
-
+import time
+from .settings import END_TIME, START_TIME
 from problem.models import Problem, ProblemTemplate
 from team.models import Team
 
@@ -15,8 +16,20 @@ def home(request):
     host = request.META['HTTP_HOST']
     host_without_port = re.search(r'(.+):.+', host)
     if host_without_port:
-        host_without_port=host_without_port.group(1)
+        host_without_port = host_without_port.group(1)
     if host_without_port:
         host = host_without_port
     context['host'] = host
+    context['time'] = {'name': None, 'start': True}
+    now = int(time.time())
+    if START_TIME:
+        start_time = time.mktime(time.strptime(START_TIME, "%Y/%m/%d %H:%M:%S"))
+        end_time = time.mktime(time.strptime(END_TIME, "%Y/%m/%d %H:%M:%S"))
+        if start_time - now > 0:
+            context['time']['name'] = "开始时间"
+            context['time']['time'] = START_TIME
+            context['time']['start'] = False
+        elif end_time - now > 0:
+            context['time']['name'] = "结束时间"
+            context['time']['time'] = END_TIME
     return render(request, 'start.html', context)

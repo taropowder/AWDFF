@@ -80,12 +80,15 @@
                     </a>
                 </li>
                 {% if request.user.is_authenticated %}
-                    <li>
-                        <a href='#info' class='section-toggle' data-section='info'>
-                            Info
-                        </a>
-                    </li>
-                    {% if request.user.team %}
+                    {% if not request.user.team or time.start %}
+                        <li>
+                            <a href='#info' class='section-toggle' data-section='info'>
+                                Info
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% if request.user.team and time.start %}
                         <li>
                             <a href='#submit' class='section-toggle' data-section='submit'>
                                 SubmitFlag
@@ -154,6 +157,9 @@
 
                             <p>
                                 we play awd for fun
+                            <div id="time" style="font-size: 30px;color: white"></div>
+
+
                             </p>
 
                             <div class='intro-btns'>
@@ -162,11 +168,11 @@
                                     About AWd
                                 </a>
                                 {% if request.user.is_authenticated %}
-                                    <li>
-                                        <a href='#info' class='section-toggle' data-section='info'>
-                                            Info
-                                        </a>
-                                    </li>
+
+                                    <a href='#info' class='btn-custom section-toggle' data-section='info'>
+                                        Info
+                                    </a>
+
                                 {% endif %}
 
                             </div>
@@ -332,110 +338,6 @@
         {% if request.user.is_authenticated %}
 
 
-            <section id='submit' class='section resume-section border-d'>
-
-                <div class='section-block timeline-block'>
-
-                    <div class='container-fluid'>
-
-                        <div class='section-header'>
-
-                            <h2>Your Team Token is <br>
-                                <strong class='color'> {{ request.user.team.token }} </strong></h2>
-
-
-                        </div>
-                        <form class="layui-form" method="post" action="{% url 'submit_flag' %}">
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">FLAG</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="flag" required lay-verify="required"
-                                           placeholder="Input Flag"
-                                           autocomplete="off" class="layui-input">
-                                </div>
-                                <input type="hidden" name="token" value="{{ request.user.team.token }}">
-                            </div>
-                            {% csrf_token %}
-                            <div class="layui-form-item">
-                                <div class="layui-input-block">
-                                    <button class="layui-btn" lay-submit lay-filter="formDemo">SUBMIT</button>
-                                </div>
-                            </div>
-                        </form>
-
-
-                    </div>
-                </div>
-
-            </section>
-
-            <section id='sheep' class='section resume-section border-d'>
-
-                <div class='section-block timeline-block'>
-                    <div class='section-header'>
-
-                        <h2>Hack others <strong class='color'> Problem </strong></h2>
-
-
-                    </div>
-                    <div class='container-fluid'>
-
-
-                        <div class="layui-tab">
-                            <ul class="layui-tab-title">
-                                {% for temple in temples %}
-                                    <li>{{ temple }}</li>
-                                {% endfor %}
-                            </ul>
-                            <div class="layui-tab-content">
-                                {% for temple,problems in temples.items %}
-                                    <div class="layui-tab-item {% if forloop.first %}layui-show{% endif %}">
-                                        <table class="layui-table ">
-                                            <colgroup>
-                                                <col width="250">
-                                                <col width="200">
-                                                <col width="200">
-                                                <col width="200">
-                                            </colgroup>
-                                            <thead>
-                                            <tr>
-                                                <th>题目名称</th>
-                                                <th>题目网址</th>
-                                                <th>轮次</th>
-                                                <th>状态</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {% for problem in problems %}
-                                                <tr>
-                                                    <td>{{ temple }}</td>
-                                                    <td>
-                                                        <a href="{{ request.scheme }}://{{ host }}:{{ problem.web_external_port }}"
-                                                           target="_blank">{{ request.scheme }}://{{ host }}:{{ problem.web_external_port }}</a>
-                                                    </td>
-                                                    <td>{{ problem.rounds }}</td>
-                                                    <td>{{ problem.status }}</td>
-
-                                                </tr>
-                                            {% endfor %}
-
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                {% endfor %}
-
-
-                            </div>
-
-
-                        </div>
-
-
-                    </div>
-                </div>
-
-            </section>
             <section id='rank' class='section resume-section border-d'>
 
                 <div class='section-block timeline-block'>
@@ -476,188 +378,300 @@
                 </div>
 
             </section>
+            {% if not request.user.team or time.start %}
+
+                <section id='info' class='section resume-section border-d'>
+
+                    <div class='section-block timeline-block'>
+
+                        <div class='container-fluid'>
+
+                            <div class='section-header'>
+
+                                {% if request.user.team %}
+                                    <h2>My Team Is<strong
+                                            class='color'> {{ request.user.team }} {{ request.user.team.score }} </strong>
+                                    </h2>
+                                {% else %}
+                                    <h2>You haven't a Team , Jion One Now</h2>
+
+                                {% endif %}
 
 
-            <!--=====================================================
-                Info Section
-            =====================================================-->
-            <section id='info' class='section resume-section border-d'>
-
-                <div class='section-block timeline-block'>
-
-                    <div class='container-fluid'>
-
-                        <div class='section-header'>
-
+                            </div>
                             {% if request.user.team %}
-                                <h2>My Team Is<strong class='color'> {{ request.user.team }}  {{ request.user.team.score }} </strong></h2>
+                                <div class="layui-tab">
+                                    <ul class="layui-tab-title">
+                                        <li class="layui-this">My Problem</li>
+                                        <li>My Attack</li>
+                                        <li>My Downtime</li>
+                                        <li>My Sheep</li>
+                                    </ul>
+                                    <div class="layui-tab-content">
+                                        <div class="layui-tab-item layui-show">
+                                            <table class="layui-table">
+                                                <colgroup>
+                                                    <col width="400">
+                                                    <col width="200">
+                                                    <col width="200">
+                                                    <col width="200">
+                                                    <col width="200">
+                                                    <col width="200">
+                                                    <col width="200">
+                                                </colgroup>
+                                                <thead>
+                                                <tr>
+                                                    <th>题目名称</th>
+                                                    <th>web端口</th>
+                                                    <th>ssh端口</th>
+                                                    <th>ssh用户名</th>
+                                                    <th>ssh密码</th>
+                                                    <th>比赛轮次</th>
+                                                    <th>服务状态</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for problem in request.user.team.problems %}
+                                                    <tr>
+                                                        <td>{{ problem.template.name }}</td>
+                                                        <td>{{ problem.web_external_port }}</td>
+                                                        <td>{{ problem.ssh_external_port }}</td>
+                                                        <td>user</td>
+                                                        <td>{{ problem.ssh_passwd }}</td>
+                                                        <td>{{ problem.rounds }}</td>
+                                                        <td>{{ problem.status }}</td>
+                                                    </tr>
+
+                                                {% endfor %}
+
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                        <div class="layui-tab-item">
+                                            <table class="layui-table">
+                                                <colgroup>
+                                                    <col width="200">
+                                                    <col width="200">
+                                                    <col width="200">
+                                                    <col>
+                                                </colgroup>
+                                                <thead>
+                                                <tr>
+                                                    <th>题目名称</th>
+                                                    <th>攻陷队伍</th>
+                                                    <th>题目分数</th>
+                                                    <th>攻击轮次</th>
+                                                    <th>攻破时间</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for attack in request.user.team.attacks %}
+                                                    <tr>
+                                                        <td>{{ attack.problem.template.name }}</td>
+                                                        <td>{{ attack.problem.team.name }}</td>
+                                                        <td>{{ attack.score }}</td>
+                                                        <td>{{ attack.rounds }}</td>
+                                                        <td>{{ attack.time }}</td>
+                                                    </tr>
+
+                                                {% endfor %}
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="layui-tab-item">
+                                            <table class="layui-table">
+                                                <colgroup>
+                                                    <col width="150">
+                                                    <col width="200">
+                                                </colgroup>
+                                                <thead>
+                                                <tr>
+                                                    <th>题目名称</th>
+                                                    <th>宕机时间</th>
+                                                    <th>轮次</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for down in request.user.team.down %}
+                                                    <tr>
+                                                        <td>{{ down.problem.template.name }}</td>
+                                                        <td>{{ down.time }}</td>
+                                                        <td>{{ down.rounds }}</td>
+                                                    </tr>
+
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="layui-tab-item">
+                                            <table class="layui-table">
+                                                <colgroup>
+                                                    <col width="250">
+                                                    <col width="200">
+                                                    <col width="200">
+                                                </colgroup>
+                                                <thead>
+                                                <tr>
+                                                    <th>题目名称</th>
+                                                    <th>被攻陷时间</th>
+                                                    <th>轮次</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for sheep in request.user.team.sheep %}
+                                                    <tr>
+                                                        <td>{{ sheep.problem.template.name }}</td>
+                                                        <td>{{ sheep.time }}</td>
+                                                        <td>{{ sheep.rounds }}</td>
+                                                    </tr>
+
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+
+                                </div>
                             {% else %}
-                                <h2>You haven't a Team , Jion One Now</h2>
+                                <form class="layui-form" method="post" action="{% url 'join_team' %}">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">Team Token</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="token" required lay-verify="required"
+                                                   placeholder="Input Team Token"
+                                                   autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                    {% csrf_token %}
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button class="layui-btn" lay-submit lay-filter="formDemo">Join it</button>
+                                        </div>
+                                    </div>
+                                </form>
 
                             {% endif %}
 
+                        </div>
+                    </div>
+
+                </section>
+            {% endif %}
+            {% if time.start %}
+
+                <section id='sheep' class='section resume-section border-d'>
+
+                    <div class='section-block timeline-block'>
+                        <div class='section-header'>
+
+                            <h2>Hack others <strong class='color'> Problem </strong></h2>
+
 
                         </div>
-                        {% if request.user.team %}
+                        <div class='container-fluid'>
+
+
                             <div class="layui-tab">
                                 <ul class="layui-tab-title">
-                                    <li class="layui-this">My Problem</li>
-                                    <li>My Attack</li>
-                                    <li>My Downtime</li>
-                                    <li>My Sheep</li>
+                                    {% for temple in temples %}
+                                        <li>{{ temple }}</li>
+                                    {% endfor %}
                                 </ul>
                                 <div class="layui-tab-content">
-                                    <div class="layui-tab-item layui-show">
-                                        <table class="layui-table">
-                                            <colgroup>
-                                                <col width="400">
-                                                <col width="200">
-                                                <col width="200">
-                                                <col width="200">
-                                                <col width="200">
-                                                <col width="200">
-                                                <col width="200">
-                                            </colgroup>
-                                            <thead>
-                                            <tr>
-                                                <th>题目名称</th>
-                                                <th>web端口</th>
-                                                <th>ssh端口</th>
-                                                <th>ssh用户名</th>
-                                                <th>ssh密码</th>
-                                                <th>比赛轮次</th>
-                                                <th>服务状态</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {% for problem in request.user.team.problems %}
+                                    {% for temple,problems in temples.items %}
+                                        <div class="layui-tab-item {% if forloop.first %}layui-show{% endif %}">
+                                            <table class="layui-table ">
+                                                <colgroup>
+                                                    <col width="250">
+                                                    <col width="200">
+                                                    <col width="200">
+                                                    <col width="200">
+                                                </colgroup>
+                                                <thead>
                                                 <tr>
-                                                    <td>{{ problem.template.name }}</td>
-                                                    <td>{{ problem.web_external_port }}</td>
-                                                    <td>{{ problem.ssh_external_port }}</td>
-                                                    <td>user</td>
-                                                    <td>{{ problem.ssh_passwd }}</td>
-                                                    <td>{{ problem.rounds }}</td>
-                                                    <td>{{ problem.status }}</td>
+                                                    <th>题目名称</th>
+                                                    <th>题目网址</th>
+                                                    <th>轮次</th>
+                                                    <th>状态</th>
                                                 </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for problem in problems %}
+                                                    <tr>
+                                                        <td>{{ temple }}</td>
+                                                        <td>
+                                                            <a href="{{ request.scheme }}://{{ host }}:{{ problem.web_external_port }}"
+                                                               target="_blank">{{ request.scheme }}://{{ host }}:{{ problem.web_external_port }}</a>
+                                                        </td>
+                                                        <td>{{ problem.rounds }}</td>
+                                                        <td>{{ problem.status }}</td>
 
-                                            {% endfor %}
+                                                    </tr>
+                                                {% endfor %}
 
-                                            </tbody>
-                                        </table>
 
-                                    </div>
-                                    <div class="layui-tab-item">
-                                        <table class="layui-table">
-                                            <colgroup>
-                                                <col width="200">
-                                                <col width="200">
-                                                <col width="200">
-                                                <col>
-                                            </colgroup>
-                                            <thead>
-                                            <tr>
-                                                <th>题目名称</th>
-                                                <th>攻陷队伍</th>
-                                                <th>题目分数</th>
-                                                <th>攻击轮次</th>
-                                                <th>攻破时间</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {% for attack in request.user.team.attacks %}
-                                                <tr>
-                                                    <td>{{ attack.problem.template.name }}</td>
-                                                    <td>{{ attack.problem.team.name }}</td>
-                                                    <td>{{ attack.score }}</td>
-                                                    <td>{{ attack.rounds }}</td>
-                                                    <td>{{ attack.time }}</td>
-                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {% endfor %}
 
-                                            {% endfor %}
 
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="layui-tab-item">
-                                        <table class="layui-table">
-                                            <colgroup>
-                                                <col width="150">
-                                                <col width="200">
-                                            </colgroup>
-                                            <thead>
-                                            <tr>
-                                                <th>题目名称</th>
-                                                <th>宕机时间</th>
-                                                <th>轮次</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {% for down in request.user.team.down %}
-                                                <tr>
-                                                    <td>{{ down.problem.template.name }}</td>
-                                                    <td>{{ down.time }}</td>
-                                                    <td>{{ down.rounds }}</td>
-                                                </tr>
-
-                                            {% endfor %}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="layui-tab-item">
-                                        <table class="layui-table">
-                                            <colgroup>
-                                                <col width="250">
-                                                <col width="200">
-                                                <col width="200">
-                                            </colgroup>
-                                            <thead>
-                                            <tr>
-                                                <th>题目名称</th>
-                                                <th>被攻陷时间</th>
-                                                <th>轮次</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {% for sheep in request.user.team.sheep %}
-                                                <tr>
-                                                    <td>{{ sheep.problem.template.name }}</td>
-                                                    <td>{{ sheep.time }}</td>
-                                                    <td>{{ sheep.rounds }}</td>
-                                                </tr>
-
-                                            {% endfor %}
-                                            </tbody>
-                                        </table>
-                                    </div>
                                 </div>
 
 
                             </div>
-                        {% else %}
-                            <form class="layui-form" method="post" action="{% url 'join_team' %}">
+
+
+                        </div>
+                    </div>
+
+                </section>
+
+                <section id='submit' class='section resume-section border-d'>
+
+                    <div class='section-block timeline-block'>
+
+                        <div class='container-fluid'>
+
+                            <div class='section-header'>
+
+                                <h2>Your Team Token is <br>
+                                    <strong class='color'> {{ request.user.team.token }} </strong></h2>
+
+
+                            </div>
+                            <form class="layui-form" method="post" action="{% url 'submit_flag' %}">
                                 <div class="layui-form-item">
-                                    <label class="layui-form-label">Team Token</label>
+                                    <label class="layui-form-label">FLAG</label>
                                     <div class="layui-input-block">
-                                        <input type="text" name="token" required lay-verify="required"
-                                               placeholder="Input Team Token"
+                                        <input type="text" name="flag" required lay-verify="required"
+                                               placeholder="Input Flag"
                                                autocomplete="off" class="layui-input">
                                     </div>
+                                    <input type="hidden" name="token" value="{{ request.user.team.token }}">
                                 </div>
                                 {% csrf_token %}
                                 <div class="layui-form-item">
                                     <div class="layui-input-block">
-                                        <button class="layui-btn" lay-submit lay-filter="formDemo">Join it</button>
+                                        <button class="layui-btn" lay-submit lay-filter="formDemo">SUBMIT</button>
                                     </div>
                                 </div>
                             </form>
 
-                        {% endif %}
 
+                        </div>
                     </div>
-                </div>
 
-            </section>
+                </section>
+
+                <!--=====================================================
+                    Info Section
+                =====================================================-->
+
+            {% endif %}
         {% else %}
 
             <!--=====================================================
@@ -1055,6 +1069,30 @@
 
         //…
     });
+    {% if time.name %}
+        layui.use('util', function () {
+            var util = layui.util;
+
+            //示例
+            var endTime = new Date("{{ time.time }}").getTime() //假设为结束日期
+                , serverTime = new Date().getTime(); //假设为当前服务器时间，这里采用的是本地时间，实际使用一般是取服务端的
+
+            util.countdown(endTime, serverTime, function (date, serverTime, timer) {
+                var str = date[0] + '天' + date[1] + '时' + date[2] + '分' + date[3] + '秒';
+                var refresh = 1;
+                for (var i = 0; i <= 3; i++) {
+                    if (date[i] != 0) {
+                        refresh = 0;
+                    }
+                }
+                if (refresh) {
+                    location.reload();
+                }
+                layui.$('#time').html('距离{{ time.name }}还有：' + str);
+            });
+        });
+    {% endif %}
+
 </script>
 
 <!--=====================================================
