@@ -2,6 +2,7 @@ import json
 
 from django.contrib.auth import logout, authenticate, login
 # from django.contrib.auth.models import User
+from AWDFF.settings import NUMBER_TEAM
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -73,12 +74,16 @@ class JoinTeamView(View):
     def post(self, request):
         context = {'title': '加入成功'}
         context['url'] = reverse_lazy('home') + '#info'
-        token = request.POST.get('token')
+        token = request.POST.get('token').lower()
         team = Team.objects.filter(token=token).first()
         if team:
-            context['message'] = f'成功加入{team.name}队'
-            request.user.team = team
-            request.user.save()
+            if Member.objects.filter(team=team).count() < NUMBER_TEAM:
+                context['message'] = f'成功加入{team.name}队'
+                request.user.team = team
+                request.user.save()
+            else:
+                context['title'] = '加入失败'
+                context['message'] = '队伍人数已满'
         else:
             context['title'] = '加入失败'
             context['message'] = '该队伍不存在,请确认token'

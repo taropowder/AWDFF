@@ -29,7 +29,7 @@ class solveProblemView(View):
                 problem = None
             if problem:
                 try:
-                    token_uuid = UUID(request.POST.get('token'))
+                    token_uuid = UUID(request.POST.get('token').lower())
                     team = Team.objects.get(token=token_uuid)
                 except Team.DoesNotExist:
                     team = None

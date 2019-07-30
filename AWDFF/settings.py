@@ -162,6 +162,7 @@ with open(CONFIG_YML, 'r') as f:
     CHECK_LOG = config['check_log']
     ROUND_LOG = config['round_log']
     PLAY_NOW = config['play_now']
+    NUMBER_TEAM = config['number_team']
 if not PLAY_NOW:
     _start_time = time.strptime(START_TIME, "%Y/%m/%d %H:%M:%S")
     _end_time = time.strptime(END_TIME, "%Y/%m/%d %H:%M:%S")
@@ -181,6 +182,7 @@ else:
     CRON_TEMPLATE = '*/{times} * * * *'
     CHECKER_CRON = CRON_TEMPLATE.format(times=CHECK_TIME_INTERVAL)
     ROUND_CRON = CRON_TEMPLATE.format(times=ROUND_TIME_INTERVAL)
+
 
 CRONJOBS = [
     # 表示两分钟check一次
