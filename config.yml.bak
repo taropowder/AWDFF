@@ -6,3 +6,4 @@ number_team: 3
 check_log: '/tmp/check.log'
 round_log: '/tmp/round.log'
 play_now: True
+debug: False

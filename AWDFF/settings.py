@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'zj+ej_($gs6j%2tp5%d2_!_sh%vm5o_)8j1r(lno!1%vn$dkbn'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -162,6 +162,8 @@ with open(CONFIG_YML, 'r') as f:
     CHECK_LOG = config['check_log']
     ROUND_LOG = config['round_log']
     PLAY_NOW = config['play_now']
+    if 'debug' in config:
+        DEBUG = config['debug']
     NUMBER_TEAM = config['number_team']
 if not PLAY_NOW:
     _start_time = time.strptime(START_TIME, "%Y/%m/%d %H:%M:%S")
