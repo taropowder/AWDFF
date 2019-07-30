@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.conf.urls import url
 from django.urls import path, include
-from .view import home
+from .view import home, page_not_found
 
 urlpatterns = [
     url(r'^admin_tools/', include('admin_tools.urls')),
@@ -26,3 +26,5 @@ urlpatterns = [
     path('account/', include('account.urls')),
     path('competition/', include('competition.urls'))
 ]
+
+handler404 = page_not_found

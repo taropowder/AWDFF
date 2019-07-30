@@ -2,7 +2,7 @@ from django.shortcuts import render
 import re
 import time
 import os
-from .settings import END_TIME, START_TIME, ROUND_TIME_INTERVAL,PLAY_NOW
+from .settings import END_TIME, START_TIME, ROUND_TIME_INTERVAL, PLAY_NOW
 from problem.models import Problem, ProblemTemplate
 from announcement.models import Announcement
 from team.models import Team
@@ -44,3 +44,7 @@ def home(request):
             context['time']['name'] = "结束时间"
             context['time']['time'] = END_TIME
     return render(request, 'start.html', context)
+
+
+def page_not_found(request, exception, template_name='errors/page_404.html'):
+    return render(request, template_name)
