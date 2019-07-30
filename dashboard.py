@@ -52,7 +52,11 @@ class CustomIndexDashboard(Dashboard):
                     'url': '/admin/instantiate_all_problem',
                     'external': False,
                 },
-
+                {
+                    'title': '关闭赛题',
+                    'url': '/admin/remove_all_problem',
+                    'external': False,
+                },
             ]
         ))
 

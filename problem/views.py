@@ -1,12 +1,13 @@
 import json
 
 from django.shortcuts import render, get_object_or_404
+from django.urls import reverse_lazy
 from django.views.generic import View, DetailView, UpdateView, CreateView, FormView, ListView
 
 from problem.models import Problem, ProblemTemplate
 from team.models import Team
 from utils.dockerController import DockerController
-from utils.flag import generate_flag_command,generate_ssh_paasword
+from utils.flag import generate_flag_command, generate_ssh_paasword
 from django.http import HttpResponse
 
 # Create your views here.
@@ -24,10 +25,10 @@ class InstantiateAllProblemView(View):
 
     def post(self, request):
         teams = Team.objects.all()
-        resp = {'status':'ok'}
-        template = get_object_or_404(ProblemTemplate,pk=request.POST.get('template_id', None))
+        template = get_object_or_404(ProblemTemplate, pk=request.POST.get('template_id', None))
+        resp = {'title': '成功', 'message': f'成功开启{template.name}', 'url': reverse_lazy('home') + '#sheep'}
         for team in teams:
-            docker_info = docker_controller.run_container(template.image_id,template.internal_port)
+            docker_info = docker_controller.run_container(template.image_id, template.internal_port)
             problem = Problem()
             problem.container_id = docker_info['id']
             problem.ssh_external_port = docker_info['ssh_port']
@@ -41,12 +42,40 @@ class InstantiateAllProblemView(View):
             docker_controller.exec_container(problem.container_id, command)
             problem.save()
 
-        return HttpResponse(json.dumps(resp), content_type="application/json")
+        return render(request, 'alert.html', resp)
 
-    def get(self,request):
+    def get(self, request):
         result = {}
         templates = ProblemTemplate.objects.all()
         result['templates'] = templates
-        return render(request,'manager/instantiate_all_problem.html',result)
+        return render(request, 'manager/instantiate_all_problem.html', result)
 
 
+class RemoveAllProblem(View):
+
+    def post(self, request):
+        template = get_object_or_404(ProblemTemplate, pk=request.POST.get('template_id', None))
+        resp = {'title': '成功', 'message': f'成功关闭{template.name}', 'url': reverse_lazy('home') + '#sheep'}
+        problems = Problem.objects.filter(template=template)
+        for problem in problems:
+            docker_controller.rm_container(problem.container_id)
+
+        return render(request, 'alert.html', resp)
+
+    def get(self, request):
+        result = {}
+        templates = ProblemTemplate.objects.all()
+        result['templates'] = templates
+        return render(request, 'manager/remove_all_problem.html', result)
+
+
+class RestartProblem(View):
+
+    def post(self, request):
+        template = get_object_or_404(ProblemTemplate, pk=request.POST.get('template_id', None))
+        resp = {'title': '成功', 'message': f'成功关闭{template.name}', 'url': reverse_lazy('home') + '#sheep'}
+        problems = Problem.objects.filter(template=template)
+        for problem in problems:
+            docker_controller.rm_container(problem.container_id)
+
+        return render(request, 'alert.html', resp)

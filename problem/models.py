@@ -36,7 +36,7 @@ class Problem(models.Model):
     ssh_passwd = models.CharField('ssh密码', max_length=12)
     template = models.ForeignKey(ProblemTemplate, on_delete=models.CASCADE)
     flag = models.CharField('题目FLAG', max_length=50, unique=True)
-    container_id = models.CharField('容器id', max_length=50, unique=True)
+    container_id = models.CharField('容器id', max_length=100, unique=True)
     # 容器状态分为 正常运行、宕机、被攻陷 三种状态
     STATUS_CHOICES = (
         ('running', '正常运行'),
@@ -108,5 +108,17 @@ class Down(models.Model):
 
     class Meta:
         verbose_name = '宕机记录'
+        verbose_name_plural = verbose_name
+        ordering = ['-id']
+
+
+class Restart(models.Model):
+    time = models.DateTimeField('重启时间', auto_now_add=True)
+    team = models.ForeignKey('team.Team', on_delete=models.CASCADE)
+    rounds = models.IntegerField('比赛轮次', help_text="相同轮次内只会记录一次")
+    problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = '重启记录'
         verbose_name_plural = verbose_name
         ordering = ['-id']

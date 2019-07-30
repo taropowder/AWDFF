@@ -50,14 +50,15 @@ class DockerController:
 
 if __name__ == '__main__':
     d = DockerController()
+    d.rm_container('fea605d3a96200a5f5a5e88c689d')
     # d.run_container('94c8d3f00904', 80)
     # d.show_running_containers()
     # d.rm_container('01eb037b8e')
-    command = """ bash -c "useradd -p `openssl passwd -1 -salt 'taro' {password}` user5" """
-    from utils import flag
-    command = flag.generate_ssh_paasword(command)
-    print(command)
-    d.exec_container('6ba731551323', command[1])
+    # command = """ bash -c "useradd -p `openssl passwd -1 -salt 'taro' {password}` user5" """
+    # from utils import flag
+    # command = flag.generate_ssh_paasword(command)
+    # print(command)
+    # d.exec_container('6ba731551323', command[1])
     # ciscn_09
     # d._info()_info
     # d.runContainer()
