@@ -334,11 +334,11 @@
 
                     <div class='row'>
 
-                                            <div class='col-md-4'>
+                        <div class='col-md-4'>
                             <div class='service'>
 
                                 <div class='icon'>
-                                   <i class='ion-social-github'></i>
+                                    <i class='ion-social-github'></i>
                                 </div>
 
                                 <div class='content'>
@@ -346,7 +346,9 @@
                                     <h4>star</h4>
 
                                     <p>
-                                        If you play of very happy, thank you very much you can give me a <a href="https://github.com/taropowder/AWDFF"><strong class='color'>star</strong></a> in github
+                                        If you play of very happy, thank you very much you can give me a <a
+                                            href="https://github.com/taropowder/AWDFF"><strong
+                                            class='color'>star</strong></a> in github
                                     </p>
 
                                 </div>
@@ -366,14 +368,16 @@
                                     <h4>issue</h4>
 
                                     <p>
-                                        if you have any question, you can start a <a href="https://github.com/taropowder/AWDFF"><strong class='color'>issue</strong></a> to me
+                                        if you have any question, you can start a <a
+                                            href="https://github.com/taropowder/AWDFF"><strong
+                                            class='color'>issue</strong></a> to me
                                     </p>
 
                                 </div>
 
                             </div>
                         </div>
-                         <div class='col-md-4'>
+                        <div class='col-md-4'>
                             <div class='service'>
 
                                 <div class='icon'>
@@ -385,7 +389,9 @@
                                     <h4>PR</h4>
 
                                     <p>
-                                       If you have good Suggestions, welcome to <a href="https://github.com/taropowder/AWDFF"><strong class='color'>PR</strong></a> to the project
+                                        If you have good Suggestions, welcome to <a
+                                            href="https://github.com/taropowder/AWDFF"><strong class='color'>PR</strong></a>
+                                        to the project
                                     </p>
 
                                 </div>
@@ -477,6 +483,7 @@
                                         <li>My Attack</li>
                                         <li>My Downtime</li>
                                         <li>My Sheep</li>
+                                        <li>My Restart</li>
                                     </ul>
                                     <div class="layui-tab-content">
                                         <div class="layui-tab-item layui-show">
@@ -597,6 +604,32 @@
                                                         <td>{{ sheep.problem.template.name }}</td>
                                                         <td>{{ sheep.time }}</td>
                                                         <td>{{ sheep.rounds }}</td>
+                                                    </tr>
+
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="layui-tab-item">
+                                            <table class="layui-table">
+                                                <colgroup>
+                                                    <col width="200">
+                                                    <col width="200">
+                                                    <col width="200">
+                                                </colgroup>
+                                                <thead>
+                                                <tr>
+                                                    <th>题目名称</th>
+                                                    <th>重启时间</th>
+                                                    <th>轮次</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for restart in request.user.team.restart %}
+                                                    <tr>
+                                                        <td>{{ restart.problem.template.name }}</td>
+                                                        <td>{{ restart.time }}</td>
+                                                        <td>{{ restart.rounds }}</td>
                                                     </tr>
 
                                                 {% endfor %}

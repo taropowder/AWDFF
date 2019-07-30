@@ -1,6 +1,6 @@
 import uuid
 from django.db import models
-from problem.models import Attack, Problem, Down, Hack
+from problem.models import Attack, Problem, Down, Hack, Restart
 
 
 # Create your models here.
@@ -40,6 +40,12 @@ class Team(models.Model):
                 integral -= down_problem.problem.template.score * 1.5
             except:
                 pass
+        restart_problems = Restart.objects.filter(team=self)
+        for restart_problem in restart_problems:
+            try:
+                integral -= restart_problem.problem.template.score * 2.0
+            except:
+                pass
         return integral
 
     @property
@@ -55,6 +61,10 @@ class Team(models.Model):
     @property
     def down(self):
         return Down.objects.filter(team=self)
+
+    @property
+    def restart(self):
+        return Restart.objects.filter(team=self)
 
     @property
     def sheep(self):
