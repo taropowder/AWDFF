@@ -30,6 +30,7 @@ start_time: '2019/7/29 15:00:00'
 end_time: '2019/7/29 19:00:00'
 check_time_interval: 2
 round_time_interval: 10
+number_team: 3
 check_log: '/tmp/check.log'
 round_log: '/tmp/round.log'
 play_now: True
@@ -40,6 +41,7 @@ play_now: True
 + end_time 格式为 '%Y/%m/%d %H:%M:%S' 为比赛结束时间,会根据这个时间判定是否能提交FLAG
 + check_time_interval check脚本每多少分钟执行一次
 + round_time_interval 一轮多长时间
++ number_team 一个队伍中最大人数    
 + check_log check脚本日志文件的位置
 + round_log 更新轮数脚本文件的位置
 + play_now play_now模式是否开启
