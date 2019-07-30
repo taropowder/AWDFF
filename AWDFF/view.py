@@ -4,6 +4,7 @@ import time
 import os
 from .settings import END_TIME, START_TIME, ROUND_TIME_INTERVAL,PLAY_NOW
 from problem.models import Problem, ProblemTemplate
+from announcement.models import Announcement
 from team.models import Team
 
 START_CHECK_TIME = None
@@ -18,6 +19,7 @@ def home(request):
     context['teams'] = sorted(teams, key=lambda t: t.score, reverse=True)
     host = request.META['HTTP_HOST']
     host_without_port = re.search(r'(.+):.+', host)
+    context['announcements'] = Announcement.objects.all().order_by('create_time')
     if host_without_port:
         host_without_port = host_without_port.group(1)
     if host_without_port:

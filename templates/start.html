@@ -79,6 +79,11 @@
                         About
                     </a>
                 </li>
+                <li>
+                    <a href='#announcement' class='section-toggle' data-section='announcement'>
+                        Announcement
+                    </a>
+                </li>
                 {% if request.user.is_authenticated %}
                     {% if not request.user.team or time.start %}
                         <li>
@@ -572,7 +577,7 @@
                         <div class='section-header'>
 
                             <h2>Hack others <strong class='color'> Problem </strong></h2>
-                                <div id="round_time_sheep" style="font-size: 30px;color: red"></div>
+                            <div id="round_time_sheep" style="font-size: 30px;color: red"></div>
 
 
                         </div>
@@ -665,6 +670,38 @@
                                     </div>
                                 </div>
                             </form>
+
+
+                        </div>
+                    </div>
+
+                </section>
+                <section id='announcement' class='section resume-section border-d'>
+
+                    <div class='section-block timeline-block'>
+
+                        <div class='container-fluid'>
+
+                            <div class='section-header'>
+
+                                <h2><strong class='color'> Announcement </strong></h2>
+
+
+                            </div>
+                            {% for announcement in announcements %}
+                            <div class="layui-card">
+                                <div class="layui-card-header">{{ announcement.title }}</div>
+                                <div class="layui-card-body">
+                                   {{ announcement.content }}
+                                    <div align="right">
+                                   {{ announcement.create_time }}
+                                    </div>
+                                </div>
+
+                            </div>
+                            {% endfor %}
+
+
 
 
                         </div>
@@ -1107,8 +1144,8 @@
                         }
                     }
                     if (refresh) {
-                       location.reload();
-                     }
+                        location.reload();
+                    }
                     layui.$('#round_time').html('本轮还有：' + str);
                     layui.$('#round_time_sheep').html('本轮还有：' + str);
                 });

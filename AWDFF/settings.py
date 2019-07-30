@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'competition',
     'account',
     'team',
+    'announcement',
     'django_crontab',
 ]
 
