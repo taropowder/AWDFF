@@ -66,7 +66,7 @@ class Problem(models.Model):
 
 
 class Attack(models.Model):
-    problem = models.ForeignKey(Problem, on_delete=models.DO_NOTHING)
+    problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
     time = models.DateTimeField(auto_now_add=True)
     attack_team = models.ForeignKey('team.Team', on_delete=models.CASCADE)
     rounds = models.IntegerField('比赛轮次', help_text="相同轮次内只可以攻击一次")
@@ -87,7 +87,7 @@ class Attack(models.Model):
 
 
 class Hack(models.Model):
-    problem = models.ForeignKey(Problem, on_delete=models.DO_NOTHING)
+    problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
     time = models.DateTimeField(auto_now_add=True)
     rounds = models.IntegerField('比赛轮次', help_text="相同轮次内只可以攻击一次")
 
@@ -104,7 +104,7 @@ class Down(models.Model):
     time = models.DateTimeField('宕机时间', auto_now_add=True)
     team = models.ForeignKey('team.Team', on_delete=models.CASCADE)
     rounds = models.IntegerField('比赛轮次', help_text="相同轮次内只会被判定宕机一次")
-    problem = models.ForeignKey(Problem, on_delete=models.DO_NOTHING)
+    problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = '宕机记录'
