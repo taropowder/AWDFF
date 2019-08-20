@@ -408,6 +408,36 @@
 
 
         </section>
+            <section id='announcement' class='section resume-section border-d'>
+
+                    <div class='section-block timeline-block'>
+
+                        <div class='container-fluid'>
+
+                            <div class='section-header'>
+
+                                <h2><strong class='color'> Announcement </strong></h2>
+
+
+                            </div>
+                            {% for announcement in announcements %}
+                                <div class="layui-card">
+                                    <div class="layui-card-header">{{ announcement.title }}</div>
+                                    <div class="layui-card-body">
+                                        {{ announcement.content }}
+                                        <div align="right">
+                                            {{ announcement.create_time }}
+                                        </div>
+                                    </div>
+
+                                </div>
+                            {% endfor %}
+
+
+                        </div>
+                    </div>
+
+                </section>
 
         {% if request.user.is_authenticated %}
 
@@ -665,36 +695,6 @@
 
                 </section>
             {% endif %}
-            <section id='announcement' class='section resume-section border-d'>
-
-                    <div class='section-block timeline-block'>
-
-                        <div class='container-fluid'>
-
-                            <div class='section-header'>
-
-                                <h2><strong class='color'> Announcement </strong></h2>
-
-
-                            </div>
-                            {% for announcement in announcements %}
-                                <div class="layui-card">
-                                    <div class="layui-card-header">{{ announcement.title }}</div>
-                                    <div class="layui-card-body">
-                                        {{ announcement.content }}
-                                        <div align="right">
-                                            {{ announcement.create_time }}
-                                        </div>
-                                    </div>
-
-                                </div>
-                            {% endfor %}
-
-
-                        </div>
-                    </div>
-
-                </section>
 
             {% if time.start %}
 
