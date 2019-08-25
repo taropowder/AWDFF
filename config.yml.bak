@@ -7,3 +7,5 @@ check_log: '/tmp/check.log'
 round_log: '/tmp/round.log'
 play_now: True
 debug: False
+max_pid: 100
+

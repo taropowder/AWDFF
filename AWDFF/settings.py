@@ -161,6 +161,7 @@ with open(CONFIG_YML, 'r') as f:
     ROUND_TIME_INTERVAL = config['round_time_interval']
     CHECK_LOG = config['check_log']
     ROUND_LOG = config['round_log']
+    MAX_PID = config['max_pid']
     PLAY_NOW = config['play_now']
     if 'debug' in config:
         DEBUG = config['debug']
