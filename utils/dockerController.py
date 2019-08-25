@@ -28,7 +28,7 @@ class DockerController:
         web_port = get_no_port_being_used()
         container = self.client.containers.run(image=image,
                                                ports={'22/tcp': ssh_port, f'{internal_web_port}/tcp': web_port},
-                                               name=build_name, command=command, detach=True, pids_limit=30)
+                                               name=build_name, command=command, detach=True, pids_limit=100)
         logging.log(logging.INFO, f"ssh port is {ssh_port}, web port is {web_port}")
         container_info = {}
         container_info['id'] = container.id
