@@ -46,5 +46,8 @@ def home(request):
     return render(request, 'start.html', context)
 
 
+def element_home(request):
+    return render(request, 'index.html')
+
 def page_not_found(request, exception, template_name='errors/page_404.html'):
     return render(request, template_name)

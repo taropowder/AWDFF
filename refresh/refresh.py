@@ -20,3 +20,5 @@ def refresh_flag():
         except Exception as e:
             print(f"{check_time}  ROUNDS {{{problem.rounds}}} {problem.container_id} error is {e}")
 
+    with open("/tmp/round.time","w") as f:
+        f.write(str(int(time.time())+600))

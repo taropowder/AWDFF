@@ -3,7 +3,7 @@ import json
 from django.contrib.auth import logout, authenticate, login
 # from django.contrib.auth.models import User
 from AWDFF.settings import NUMBER_TEAM
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from .models import *
@@ -15,31 +15,33 @@ from django.views.generic import View, DetailView, UpdateView, CreateView, FormV
 
 def user_register(request):
     context = {}
-    context['title'] = '注册失败'
+    context['result'] = -1
     context['message'] = '未知异常'
-    context['url'] = context['url'] = reverse_lazy('home') + '#register'
+    # context['url'] = context['url'] = reverse_lazy('home') + '#register'
 
     if request.method == 'POST':
         name = request.POST.get('username')
         u = Member.objects.filter(username=name)
         if u:
-            context['title'] = '注册失败'
+            context['result'] = -1
             context['message'] = '该用户名已被使用'
-            return render(request, 'alert.html', context)
+            return JsonResponse(context, safe=False)
         password = request.POST.get('password')
         email = request.POST.get('email')
-        organization = request.POST.get('email')
+        organization = request.POST.get('organization')
         member = Member.objects.create_user(username=name, email=email, password=password, organization=organization)
         if member:
-            context['title'] = '注册成功'
-            context['message'] = '自动跳转至登录页面'
-            context['url'] = reverse_lazy('home') + '#login'
+            context['result'] = 1
+            context['message'] = '注册成功'
+            # context['url'] = reverse_lazy('home') + '#login'
         # user.save()
         # profile.grade = profile.student_id[0:2]
         # profile.save()
         # context['name'] = name
         # return render(request, 'login.html', context)
-    return render(request, 'alert.html', context)
+    return JsonResponse(context, safe=False)
+
+    # return render(request, 'alert.html', context)
 
 
 def user_logout(request):
@@ -57,34 +59,42 @@ def user_login(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                url = request.GET.get('next', '/')
-                return HttpResponseRedirect(url)
+                # url = request.GET.get('next', '/')
+                context['result'] = 1
+                context['message'] = "登录成功"
             else:
-                context['title'] = '登录失败'
+                context['result'] = -1
                 context['message'] = "您的用户已经被限制,请联系工作人员"
         else:
-            context['title'] = '登录失败'
+            context['result'] = -1
             context['message'] = "用户名或者密码错误"
-        context['url'] = reverse_lazy('home') + '#login'
-        return render(request, 'alert.html', context)
+        return JsonResponse(context, safe=False)
+
+        # context['url'] = reverse_lazy('home') + '#login'
+        # return render(request, 'alert.html', context)
 
 
 class JoinTeamView(View):
 
     def post(self, request):
-        context = {'title': '加入成功'}
-        context['url'] = reverse_lazy('home') + '#info'
+        data = {
+            "result": 1,
+            "title": "加入成功",
+            "message": ""
+        }
         token = request.POST.get('token').lower()
         team = Team.objects.filter(token=token).first()
         if team:
             if Member.objects.filter(team=team).count() < NUMBER_TEAM:
-                context['message'] = f'成功加入{team.name}队'
+                data['message'] = f'成功加入{team.name}队'
                 request.user.team = team
                 request.user.save()
             else:
-                context['title'] = '加入失败'
-                context['message'] = '队伍人数已满'
+                data['result'] = -1
+                data['title'] = '加入失败'
+                data['message'] = '队伍人数已满'
         else:
-            context['title'] = '加入失败'
-            context['message'] = '该队伍不存在,请确认token'
-        return render(request, 'alert.html', context)
+            data['result'] = 0
+            data['title'] = '加入失败'
+            data['message'] = 'token错误'
+        return JsonResponse(data, safe=False)

@@ -2,6 +2,7 @@ import time
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DetailView, UpdateView, CreateView, FormView, ListView
 from problem.models import *
 from team.models import *
@@ -18,7 +19,6 @@ class solveProblemView(View):
 
     def post(self, request):
         result = {}
-        result['url'] = reverse_lazy('home') + '#submit'
         start_time = time.mktime(time.strptime(START_TIME, "%Y/%m/%d %H:%M:%S"))
         end_time = time.mktime(time.strptime(END_TIME, "%Y/%m/%d %H:%M:%S"))
         now = int(time.time())
@@ -40,6 +40,7 @@ class solveProblemView(View):
                         except Attack.DoesNotExist:
                             attack = None
                         if attack:
+                            result['result'] = -1
                             result['message'] = "已经提交过了,不能再提交了"
                             result['title'] = "提交失败"
                         else:
@@ -49,23 +50,28 @@ class solveProblemView(View):
                                 hacked = Hack.objects.create(problem=problem, rounds=problem.rounds)
                             problem.status = 'hacked'
                             problem.save()
+                            result['result'] = 1
                             result['message'] = "提交正确"
                             result['title'] = "提交成功"
-                            result['url'] = reverse_lazy('home') + '#info'
 
                     else:
+                        result['result'] = -1
                         result['message'] = "你不能提交自己的FLAG"
                         result['title'] = "提交失败"
                 else:
+                    result['result'] = -1
                     result['message'] = "TOKEN异常"
                     result['title'] = "提交失败"
             else:
+                result['result'] = 0
                 result['message'] = "FLAG错误"
                 result['title'] = "提交失败"
         else:
+            result['result'] = -1
             result['message'] = "比赛未开始或者已经结束"
             result['title'] = "提交失败"
-        return render(request, 'alert.html', result)
+        return JsonResponse(result, safe=False)
+        # return render(request, 'alert.html', result)
 
 
 class TeamListView(ListView):

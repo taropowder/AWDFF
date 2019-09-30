@@ -16,11 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.conf.urls import url
 from django.urls import path, include
-from .view import home, page_not_found
+from .view import home,element_home ,page_not_found
 
 urlpatterns = [
     url(r'^admin_tools/', include('admin_tools.urls')),
-    url(r'^$', home, name='home'),
+    url(r'^$',element_home , name='home'),
+    url(r'old',home , name='home'),
+    path('api/',include('AWDFF.api')),
     path('admin/', admin.site.urls),
     path('problem/', include('problem.urls')),
     path('account/', include('account.urls')),

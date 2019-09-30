@@ -128,13 +128,12 @@ TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
-USE_L10N = True
-
-USE_TZ = True
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 AUTH_USER_MODEL = 'account.Member'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "element/"),
+]
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
@@ -149,7 +148,6 @@ CONFIG_YML = os.path.join(BASE_DIR, 'config.yml')
 if not os.path.exists(CONFIG_YML):
     print('there is no config.yml, please check are you init')
     exit()
-
 
 with open(CONFIG_YML, 'r') as f:
     config = yaml.safe_load(f.read())
@@ -185,7 +183,6 @@ else:
     CRON_TEMPLATE = '*/{times} * * * *'
     CHECKER_CRON = CRON_TEMPLATE.format(times=CHECK_TIME_INTERVAL)
     ROUND_CRON = CRON_TEMPLATE.format(times=ROUND_TIME_INTERVAL)
-
 
 CRONJOBS = [
     # 表示两分钟check一次
