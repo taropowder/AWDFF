@@ -14,6 +14,8 @@ services:
     build: .
     image: taropowder/awdff
     container_name: awdff
+    environment:
+      - TZ=Asia/Shanghai
     ports:
       - "8000:8000"
     volumes:
