@@ -4,3 +4,4 @@ django-admin-tools==0.8.1
 django-crontab==0.7.1
 requests==2.22.0
 pyyaml==5.1.1
+beautifulsoup4==4.8.0

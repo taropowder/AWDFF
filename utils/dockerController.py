@@ -9,7 +9,7 @@ import logging
 
 class DockerController:
     def __init__(self):
-        self.client = DockerClient(base_url='tcp://127.0.0.1:2375')
+        self.client = DockerClient(base_url='tcp://10.200.10.1:2375')
 
     def _info(self):
         print(self.client.info())

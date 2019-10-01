@@ -55,5 +55,23 @@ play_now: True
     
 
 
+# docker方式部署
 
+## 将宿主机回环地址设置别名
+Linux
+```bash
+sudo /sbin/ifconfig eth0:1 10.200.10.1 broadcast 10.200.10.255 netmask 255.255.255.0 up
+sudo /sbin/route add -host 10.200.10.1 dev eth0:1
+```
 
+## 初始化程序
+
+## 启动docker
+
+```bash
+docker-compose up -d
+```
+
+成功运行！
+
+![](http://img.taropowder.cn/1569923261.png?imageMogr2/thumbnail/!70p)

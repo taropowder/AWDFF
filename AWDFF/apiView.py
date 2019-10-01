@@ -91,8 +91,11 @@ def RaceTime(request):
 
 
 def RoundTime(request):
-    with open("/tmp/round.time") as f:
-        lastRoundTime = f.readline()
+    try:
+        with open("/tmp/round.time") as f:
+            lastRoundTime = f.readline()
+    except FileNotFoundError:
+        lastRoundTime = None
     if lastRoundTime:
         timeArray = time.localtime(int(lastRoundTime))
         lastRoundTime = time.strftime("%Y/%m/%d %H:%M:%S", timeArray)

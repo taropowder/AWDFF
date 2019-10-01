@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx_awdff
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf:/etc/nginx/conf.d
+      - ./static:/static
+      - ./nginx/log:/log
+  awdff:
+    build: .
+    image: taropowder/awdff
+    container_name: awdff
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/awdff
+    command:
+      python manage.py runserver 0.0.0.0:8000
